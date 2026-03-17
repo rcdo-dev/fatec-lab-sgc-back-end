@@ -17,9 +17,9 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "cemitery")
+@Table(name = "cemetery")
 @Data
-public class CemiteryEntity {
+public class CemeteryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,11 +29,18 @@ public class CemiteryEntity {
     @Column(name = "cem_name", nullable = false)
     private String name;
 
-    @Column(name = "cem_fundation", nullable = false)
+    @Column(name = "cem_fundation_date", nullable = false)
     private LocalDate fundation;
 
     @Column(name = "cem_active")
-    private boolean active;
+    private Boolean active;
+
+    /**
+     * mappedBy = "cemitery" -> "quem manda na relação é o atributo 'cemitery' dentro de BlockEntity".
+     * fetch = FetchType.LAZY -> não carregar automaticamente a lista de blocks.
+     * cascade = CascadeType.ALL -> operações no cemitério afetam as quadras.
+     * orphanRemoval = true -> se remover da lista → apaga do banco.
+     */
 
     @OneToMany(mappedBy = "cemitery", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BlockEntity> blocks = new ArrayList<>();
