@@ -1,5 +1,7 @@
 package br.com.sgc.api.common.exception;
 
-public class BusinessException {
-
+public class BusinessException extends RuntimeException {
+    public BusinessException(String message) {
+        super(message);
+    }
 }

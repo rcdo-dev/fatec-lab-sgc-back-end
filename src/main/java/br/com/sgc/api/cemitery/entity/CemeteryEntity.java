@@ -42,6 +42,6 @@ public class CemeteryEntity {
      * orphanRemoval = true -> se remover da lista → apaga do banco.
      */
 
-    @OneToMany(mappedBy = "cemitery", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cemetery", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BlockEntity> blocks = new ArrayList<>();
 }
