@@ -12,7 +12,7 @@ public class CemeteryRequestDTO {
     @NotBlank
     private String name;
 
-    @NotBlank
+    @NotNull
     private LocalDate fundation;
 
     @NotNull
