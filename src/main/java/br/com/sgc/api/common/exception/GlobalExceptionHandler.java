@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.servlet.http.HttpServletRequest;
+
 import lombok.RequiredArgsConstructor;
 
 @RestControllerAdvice // Esta anotação diz ao Spring: "Observe todos os controllers!".
