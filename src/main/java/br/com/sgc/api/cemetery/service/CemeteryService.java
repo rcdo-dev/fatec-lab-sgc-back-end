@@ -1,7 +1,6 @@
 package br.com.sgc.api.cemetery.service;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import br.com.sgc.api.cemetery.dto.request.CemeteryRequestDTO;
@@ -14,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CemeteryService {
     private final CemeteryRepository cemeteryRepository;
-    private final MessageSource messageSource;
     private final ModelMapper mapper;
 
     public CemeteryResponseDTO save(CemeteryRequestDTO request) {
