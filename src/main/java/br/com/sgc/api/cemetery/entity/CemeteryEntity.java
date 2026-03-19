@@ -1,4 +1,4 @@
-package br.com.sgc.api.cemitery.entity;
+package br.com.sgc.api.cemetery.entity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,11 +29,11 @@ public class CemeteryEntity {
     @Column(name = "cem_name", nullable = false)
     private String name;
 
-    @Column(name = "cem_fundation_date", nullable = false)
-    private LocalDate fundation;
+    @Column(name = "cem_foundation_date", nullable = false)
+    private LocalDate foundation;
 
     @Column(name = "cem_active")
-    private Boolean active;
+    private boolean active;
 
     /**
      * mappedBy = "cemitery" -> "quem manda na relação é o atributo 'cemitery' dentro de BlockEntity".

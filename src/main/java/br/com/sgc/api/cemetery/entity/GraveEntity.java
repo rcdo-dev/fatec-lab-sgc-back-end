@@ -1,4 +1,4 @@
-package br.com.sgc.api.cemitery.entity;
+package br.com.sgc.api.cemetery.entity;
 
 import br.com.sgc.api.common.enums.AreaType;
 import br.com.sgc.api.common.enums.GraveType;
