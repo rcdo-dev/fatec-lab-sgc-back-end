@@ -1,5 +1,6 @@
 package br.com.sgc.api.cemetery.service;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.stereotype.Service;
@@ -35,5 +36,16 @@ public class CemeteryService {
         var entitySaved = cemeteryRepository.save(entity);
 
         return mapper.toResponse(entitySaved);
+    }
+
+    public List<CemeteryResponseDTO> findAll() {
+        var listEntity = cemeteryRepository.findAll();
+
+        var listResponse = listEntity
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
+
+        return listResponse;
     }
 }
