@@ -7,6 +7,7 @@ import br.com.sgc.api.cemetery.dto.request.CemeteryRequestDTO;
 import br.com.sgc.api.cemetery.dto.response.CemeteryResponseDTO;
 import br.com.sgc.api.cemetery.entity.CemeteryEntity;
 import br.com.sgc.api.cemetery.repositories.CemeteryRepository;
+import br.com.sgc.api.common.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,15 +20,15 @@ public class CemeteryService {
 
         var entity = mapper.map(request, CemeteryEntity.class);
 
-        if (entity != null) {
-            var entitySaved = cemeteryRepository.save(entity);
-            return new CemeteryResponseDTO(
-                    entitySaved.getId(),
-                    entitySaved.getName(),
-                    entitySaved.getFoundation(),
-                    entitySaved.isActive());
+        if (cemeteryRepository.existsByNameIgnoreCase(request.name())) {
+            throw new BusinessException("Já existe um cemitério cadastrado com esse nome.");
         }
 
-        throw new RuntimeException();
+        var entitySaved = cemeteryRepository.save(entity);
+        return new CemeteryResponseDTO(
+                entitySaved.getId(),
+                entitySaved.getName(),
+                entitySaved.getFoundation(),
+                entitySaved.isActive());
     }
 }
