@@ -8,4 +8,6 @@ import br.com.sgc.api.cemetery.entity.CemeteryEntity;
 @Repository
 public interface CemeteryRepository extends JpaRepository<CemeteryEntity, Long> {
     boolean existsByNameIgnoreCase(String name);
+
+    boolean existsByNameIgnoreCaseAndIdNot(String name, Long id);
 }

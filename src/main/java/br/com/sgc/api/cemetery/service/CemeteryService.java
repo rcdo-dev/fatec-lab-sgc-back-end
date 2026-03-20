@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.sgc.api.cemetery.dto.request.CemeteryRequestDTO;
 import br.com.sgc.api.cemetery.dto.response.CemeteryResponseDTO;
+import br.com.sgc.api.cemetery.entity.CemeteryEntity;
 import br.com.sgc.api.cemetery.mapper.CemeteryMapper;
 import br.com.sgc.api.cemetery.repositories.CemeteryRepository;
 
@@ -40,34 +41,22 @@ public class CemeteryService {
     }
 
     public List<CemeteryResponseDTO> findAll() {
-        var listEntity = cemeteryRepository.findAll();
-
-        var listResponse = listEntity
+        return cemeteryRepository.findAll()
                 .stream()
                 .map(mapper::toResponse)
                 .toList();
-
-        return listResponse;
     }
 
     public CemeteryResponseDTO findById(Long id) {
-        if (id == null) {
-            throw new BusinessException("Id não pode ser nulo.");
-        }
-
-        var entity = cemeteryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cemitério não encontrado"));
-
-        return mapper.toResponse(entity);
+        return mapper.toResponse(findEntityById(id));
     }
 
     public CemeteryResponseDTO update(Long id, CemeteryRequestDTO request) {
-        if (id == null) {
-            throw new BusinessException("Id não pode ser nulo.");
-        }
+        var entity = findEntityById(id);
 
-        var entity = cemeteryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cemitério não encontrado"));
+        if (cemeteryRepository.existsByNameIgnoreCaseAndIdNot(request.name(), id)) {
+            throw new BusinessException("Já existe um cemitério cadastrado com esse nome.");
+        }
 
         entity.setName(request.name());
         entity.setFoundation(request.foundation());
@@ -78,6 +67,19 @@ public class CemeteryService {
         return mapper.toResponse(entity);
     }
 
-    public void inactivate(Long id) {
+    public CemeteryResponseDTO inactivate(Long id) {
+        var entity = findEntityById(id);
+        entity.setActive(false);
+
+        return mapper.toResponse(cemeteryRepository.save(entity));
+    }
+
+    private CemeteryEntity findEntityById(Long id) {
+        if (id == null) {
+            throw new BusinessException("Id não pode ser nulo.");
+        }
+
+        return cemeteryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cemitério não encontrado"));
     }
 }
