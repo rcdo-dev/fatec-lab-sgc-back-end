@@ -11,6 +11,7 @@ import br.com.sgc.api.cemetery.mapper.CemeteryMapper;
 import br.com.sgc.api.cemetery.repositories.CemeteryRepository;
 
 import br.com.sgc.api.common.exception.BusinessException;
+import br.com.sgc.api.common.exception.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,5 +48,22 @@ public class CemeteryService {
                 .toList();
 
         return listResponse;
+    }
+
+    public CemeteryResponseDTO findById(Long id) {
+        if (id == null) {
+            throw new BusinessException("Id não pode ser nulo.");
+        }
+
+        var entity = cemeteryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cemitério não encontrado"));
+
+        return mapper.toResponse(entity);
+    }
+
+    public void update(Long id, CemeteryRequestDTO request) {
+    }
+
+    public void inactivate(Long id) {
     }
 }

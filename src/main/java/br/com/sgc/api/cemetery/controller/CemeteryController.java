@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +27,9 @@ public class CemeteryController {
     private final CemeteryService cemeteryService;
 
     @PostMapping
-    public ResponseEntity<CemeteryResponseDTO> create(@Valid @RequestBody CemeteryRequestDTO cemeteryReq) {
+    public ResponseEntity<CemeteryResponseDTO> create(@Valid @RequestBody CemeteryRequestDTO request) {
 
-        var response = cemeteryService.save(cemeteryReq);
+        var response = cemeteryService.save(request);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -43,4 +44,8 @@ public class CemeteryController {
         return ResponseEntity.ok(cemeteryService.findAll());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CemeteryResponseDTO> findById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(cemeteryService.findById(id));
+    }
 }
