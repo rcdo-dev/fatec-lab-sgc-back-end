@@ -61,7 +61,21 @@ public class CemeteryService {
         return mapper.toResponse(entity);
     }
 
-    public void update(Long id, CemeteryRequestDTO request) {
+    public CemeteryResponseDTO update(Long id, CemeteryRequestDTO request) {
+        if (id == null) {
+            throw new BusinessException("Id não pode ser nulo.");
+        }
+
+        var entity = cemeteryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cemitério não encontrado"));
+
+        entity.setName(request.name());
+        entity.setFoundation(request.foundation());
+        entity.setActive(request.active());
+
+        cemeteryRepository.save(entity);
+
+        return mapper.toResponse(entity);
     }
 
     public void inactivate(Long id) {
