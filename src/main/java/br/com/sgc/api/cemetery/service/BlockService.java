@@ -1,11 +1,14 @@
 package br.com.sgc.api.cemetery.service;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 
 import br.com.sgc.api.cemetery.dto.request.BlockRequestDTO;
 import br.com.sgc.api.cemetery.dto.response.BlockResponseDTO;
+import br.com.sgc.api.cemetery.entity.BlockEntity;
+import br.com.sgc.api.cemetery.entity.CemeteryEntity;
 import br.com.sgc.api.cemetery.mapper.BlockMapper;
 import br.com.sgc.api.cemetery.repositories.BlockRepository;
 import br.com.sgc.api.cemetery.repositories.CemeteryRepository;
@@ -36,6 +39,26 @@ public class BlockService {
         var blockSaved = blockRepository.save(blockEntity);
 
         return mapper.toReponse(blockSaved);
+    }
+
+    public List<BlockResponseDTO> findAll() {
+        return blockRepository.findAll()
+                .stream()
+                .map(mapper::toReponse)
+                .toList();
+    }
+
+    public BlockResponseDTO findById(Long id) {
+        return mapper.toReponse(findBlockById(id));
+    }
+
+    private BlockEntity findBlockById(Long id) {
+        if (id == null) {
+            throw new BusinessException("Id não pode ser nulo.");
+        }
+
+        return blockRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Quadra não encontrada."));
     }
 
 }
