@@ -33,6 +33,9 @@ public class BlockEntity {
     @Column(name = "blo_description")
     private String description;
 
+    @Column(name = "blo_active")
+    private boolean active;
+
     /**
      * ManyToOne = dono da relação (Sempre tem a FK).
      * Responsável por gravar a relação no banco de dados

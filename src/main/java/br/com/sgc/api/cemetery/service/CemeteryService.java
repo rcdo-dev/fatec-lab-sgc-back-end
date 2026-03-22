@@ -31,13 +31,13 @@ public class CemeteryService {
         /**
          * Objects.requireNonNull() -> Verifica se o objeto em questão é nulo.
          */
-        var entity = Objects.requireNonNull(
+        var cemetery = Objects.requireNonNull(
                 mapper.toEntity(request),
                 "Erro ao mapear CemeteryRequestDTO para CemeteryEntity.");
 
-        var entitySaved = cemeteryRepository.save(entity);
+        var cemeterySaved = cemeteryRepository.save(cemetery);
 
-        return mapper.toResponse(entitySaved);
+        return mapper.toResponse(cemeterySaved);
     }
 
     public List<CemeteryResponseDTO> findAll() {
@@ -48,33 +48,33 @@ public class CemeteryService {
     }
 
     public CemeteryResponseDTO findById(Long id) {
-        return mapper.toResponse(findEntityById(id));
+        return mapper.toResponse(findCemeteryById(id));
     }
 
     public CemeteryResponseDTO update(Long id, CemeteryRequestDTO request) {
-        var entity = findEntityById(id);
+        var cemetery = findCemeteryById(id);
 
         if (cemeteryRepository.existsByNameIgnoreCaseAndIdNot(request.name(), id)) {
             throw new BusinessException("Já existe um cemitério cadastrado com esse nome.");
         }
 
-        entity.setName(request.name());
-        entity.setFoundation(request.foundation());
-        entity.setActive(request.active());
+        cemetery.setName(request.name());
+        cemetery.setFoundation(request.foundation());
+        cemetery.setActive(request.active());
 
-        cemeteryRepository.save(entity);
+        cemeteryRepository.save(cemetery);
 
-        return mapper.toResponse(entity);
+        return mapper.toResponse(cemetery);
     }
 
     public CemeteryResponseDTO inactivate(Long id) {
-        var entity = findEntityById(id);
-        entity.setActive(false);
+        var cemetery = findCemeteryById(id);
+        cemetery.setActive(false);
 
-        return mapper.toResponse(cemeteryRepository.save(entity));
+        return mapper.toResponse(cemeteryRepository.save(cemetery));
     }
 
-    private CemeteryEntity findEntityById(Long id) {
+    private CemeteryEntity findCemeteryById(Long id) {
         if (id == null) {
             throw new BusinessException("Id não pode ser nulo.");
         }

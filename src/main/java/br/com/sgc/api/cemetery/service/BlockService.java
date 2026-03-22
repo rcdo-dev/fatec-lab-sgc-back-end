@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import br.com.sgc.api.cemetery.dto.request.BlockRequestDTO;
 import br.com.sgc.api.cemetery.dto.response.BlockResponseDTO;
 import br.com.sgc.api.cemetery.entity.BlockEntity;
-import br.com.sgc.api.cemetery.entity.CemeteryEntity;
 import br.com.sgc.api.cemetery.mapper.BlockMapper;
 import br.com.sgc.api.cemetery.repositories.BlockRepository;
 import br.com.sgc.api.cemetery.repositories.CemeteryRepository;
@@ -34,6 +33,7 @@ public class BlockService {
                 .orElseThrow(() -> new ResourceNotFoundException("Cemitério não encontrado."));
 
         var blockEntity = mapper.toEntity(request);
+        blockEntity.setActive(true);
         blockEntity.setCemetery(cemeteryEntity);
 
         var blockSaved = blockRepository.save(blockEntity);
@@ -50,6 +50,23 @@ public class BlockService {
 
     public BlockResponseDTO findById(Long id) {
         return mapper.toReponse(findBlockById(id));
+    }
+
+    public BlockResponseDTO update(Long id, BlockRequestDTO request) {
+        var block = findBlockById(id);
+
+        block.setDescription(request.description());
+
+        blockRepository.save(block);
+
+        return mapper.toReponse(block);
+    }
+
+    public BlockResponseDTO inactivate(Long id) {
+        var block = findBlockById(id);
+        block.setActive(false);
+
+        return mapper.toReponse(blockRepository.save(block));
     }
 
     private BlockEntity findBlockById(Long id) {

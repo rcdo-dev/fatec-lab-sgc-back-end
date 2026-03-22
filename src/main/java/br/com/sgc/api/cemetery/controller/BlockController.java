@@ -3,10 +3,13 @@ package br.com.sgc.api.cemetery.controller;
 import java.net.URI;
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +51,18 @@ public class BlockController {
     @GetMapping("/{id}")
     public ResponseEntity<BlockResponseDTO> findById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(blockService.findById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<BlockResponseDTO> update(
+            @PathVariable("id") Long id,
+            @Valid @RequestBody BlockRequestDTO request) {
+        return ResponseEntity.ok(blockService.update(id, request));
+    }
+
+    @PatchMapping("/{id}/inactive")
+    public ResponseEntity<BlockResponseDTO> inactivate(@PathVariable Long id) {
+        return ResponseEntity.ok(blockService.inactivate(id));
     }
 
 }
