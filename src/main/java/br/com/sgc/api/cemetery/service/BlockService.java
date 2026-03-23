@@ -37,9 +37,7 @@ public class BlockService {
         blockEntity.setActive(true);
         blockEntity.setCemetery(cemeteryEntity);
 
-        var blockSaved = blockRepository.save(blockEntity);
-
-        return mapper.toResponse(blockSaved);
+        return mapper.toResponse(blockRepository.save(blockEntity));
     }
 
     public List<BlockResponseDTO> findAll() {
