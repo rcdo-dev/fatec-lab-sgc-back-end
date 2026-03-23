@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.sgc.api.cemetery.dto.request.BlockRequestDTO;
+import br.com.sgc.api.cemetery.dto.request.BlockUpdateRequestDTO;
 import br.com.sgc.api.cemetery.dto.response.BlockResponseDTO;
 import br.com.sgc.api.cemetery.service.BlockService;
 
@@ -24,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/block")
+@RequestMapping("/blocks")
 public class BlockController {
 
     private final BlockService blockService;
@@ -55,7 +56,7 @@ public class BlockController {
     @PutMapping("/{id}")
     public ResponseEntity<BlockResponseDTO> update(
             @PathVariable("id") Long id,
-            @Valid @RequestBody BlockRequestDTO request) {
+            @Valid @RequestBody BlockUpdateRequestDTO request) {
         return ResponseEntity.ok(blockService.update(id, request));
     }
 

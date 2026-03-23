@@ -4,7 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public record BlockRequestDTO(
-        @Positive int number,
-        String description,
-        @NotNull @Positive Long cemeteryId) {
+                @Positive int number,
+                String description,
+                boolean active,
+                @NotNull @Positive Long cemeteryId) {
 }

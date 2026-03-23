@@ -6,6 +6,7 @@ import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 import br.com.sgc.api.cemetery.dto.request.BlockRequestDTO;
+import br.com.sgc.api.cemetery.dto.request.BlockUpdateRequestDTO;
 import br.com.sgc.api.cemetery.dto.response.BlockResponseDTO;
 import br.com.sgc.api.cemetery.entity.BlockEntity;
 import br.com.sgc.api.cemetery.mapper.BlockMapper;
@@ -38,35 +39,33 @@ public class BlockService {
 
         var blockSaved = blockRepository.save(blockEntity);
 
-        return mapper.toReponse(blockSaved);
+        return mapper.toResponse(blockSaved);
     }
 
     public List<BlockResponseDTO> findAll() {
         return blockRepository.findAll()
                 .stream()
-                .map(mapper::toReponse)
+                .map(mapper::toResponse)
                 .toList();
     }
 
     public BlockResponseDTO findById(Long id) {
-        return mapper.toReponse(findBlockById(id));
+        return mapper.toResponse(findBlockById(id));
     }
 
-    public BlockResponseDTO update(Long id, BlockRequestDTO request) {
+    public BlockResponseDTO update(Long id, BlockUpdateRequestDTO request) {
         var block = findBlockById(id);
 
         block.setDescription(request.description());
 
-        blockRepository.save(block);
-
-        return mapper.toReponse(block);
+        return mapper.toResponse(blockRepository.save(block));
     }
 
     public BlockResponseDTO inactivate(Long id) {
         var block = findBlockById(id);
         block.setActive(false);
 
-        return mapper.toReponse(blockRepository.save(block));
+        return mapper.toResponse(blockRepository.save(block));
     }
 
     private BlockEntity findBlockById(Long id) {

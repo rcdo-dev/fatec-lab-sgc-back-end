@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/cemetery")
+@RequestMapping("/cemeteries")
 public class CemeteryController {
     private final CemeteryService cemeteryService;
 

@@ -16,5 +16,5 @@ public interface BlockMapper {
     BlockEntity toEntity(BlockRequestDTO dto);
 
     @Mapping(target = "cemeteryId", source = "cemetery.id")
-    BlockResponseDTO toReponse(BlockEntity entity);
+    BlockResponseDTO toResponse(BlockEntity entity);
 }
