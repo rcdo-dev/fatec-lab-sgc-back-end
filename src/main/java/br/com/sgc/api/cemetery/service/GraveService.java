@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.sgc.api.cemetery.dto.request.GraveRequestDTO;
 import br.com.sgc.api.cemetery.dto.response.GraveResponseDTO;
+import br.com.sgc.api.cemetery.entity.GraveEntity;
 import br.com.sgc.api.cemetery.mapper.GraveMapper;
 import br.com.sgc.api.cemetery.repositories.BlockRepository;
 import br.com.sgc.api.cemetery.repositories.GraveRepository;
@@ -50,6 +51,10 @@ public class GraveService {
                 .toList();
     }
 
+    public GraveResponseDTO findById(Long id) {
+        return mapper.toResponse(findGraveById(id));
+    }
+
     private void validateAreaTypeAndGraveType(AreaType areaType, GraveType graveType) {
         if (areaType == AreaType.COMMON && graveType != GraveType.EARTH) {
             throw new BusinessException("Sepultura de área comum deve ser do tipo terra.");
@@ -64,6 +69,15 @@ public class GraveService {
         if (graveType == GraveType.MAUSOLEUM && bodyCapacity > 4) {
             throw new BusinessException("Jazigo deve ter capacidade máxima de 4 corpos.");
         }
+    }
+
+    private GraveEntity findGraveById(Long id) {
+        if (id == null) {
+            throw new BusinessException("Id não pode ser nulo.");
+        }
+
+        return graveRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Sepultura não encontrada."));
     }
 
 }
