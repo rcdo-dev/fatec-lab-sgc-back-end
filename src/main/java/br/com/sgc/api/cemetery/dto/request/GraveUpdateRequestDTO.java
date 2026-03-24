@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Positive;
 public record GraveUpdateRequestDTO(
         @NotNull GraveType graveType,
         @Positive int bodyCapacity,
+        boolean active,
         @NotNull AreaType areaType) {
 
 }

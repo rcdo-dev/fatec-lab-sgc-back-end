@@ -40,6 +40,7 @@ public class GraveService {
                 .orElseThrow(() -> new ResourceNotFoundException("Quadra não encontrada."));
 
         var graveEntity = mapper.toEntity(request);
+        graveEntity.setActive(true);
         graveEntity.setBlock(blockEntity);
 
         return mapper.toResponse(graveRepository.save(graveEntity));
@@ -69,9 +70,20 @@ public class GraveService {
         return mapper.toResponse(graveRepository.save(graveEntity));
     }
 
+    public GraveResponseDTO inactivate(Long id) {
+        var graveEntity = findGraveById(id);
+        graveEntity.setActive(false);
+
+        return mapper.toResponse(graveRepository.save(graveEntity));
+    }
+
     private void validateAreaTypeAndGraveType(AreaType areaType, GraveType graveType) {
         if (areaType == AreaType.COMMON && graveType != GraveType.EARTH) {
             throw new BusinessException("Sepultura de área comum deve ser do tipo terra.");
+        }
+
+        if (areaType == AreaType.PERPETUAL && graveType != GraveType.EARTH && graveType != GraveType.MAUSOLEUM) {
+            throw new BusinessException("Sepultura perpétua deve ser do tipo terra ou jazigo.");
         }
     }
 

@@ -11,6 +11,7 @@ public record GraveRequestDTO(
         @NotNull GraveType graveType,
         @Positive int bodyCapacity,
         @NotNull AreaType areaType,
+        boolean active,
         @NotNull @Positive Long blockId) {
 
 }

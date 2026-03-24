@@ -37,11 +37,15 @@ public class GraveEntity {
 
     /**
      * nullable = false → regra do banco.
+     * 
      * @NotNull → regra da API
      */
     @NotNull
     @Column(name = "gra_body_capacity", nullable = false)
     private int bodyCapacity;
+
+    @Column(name = "gra_active")
+    private boolean active;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gra_area_type", nullable = false)

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -55,6 +56,11 @@ public class GraveController {
             @PathVariable("id") Long id,
             @Valid @RequestBody GraveUpdateRequestDTO request) {
         return ResponseEntity.ok(graveService.update(id, request));
+    }
+
+    @PatchMapping("/{id}/inactive")
+    public ResponseEntity<GraveResponseDTO> inactivate(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(graveService.inactivate(id));
     }
 
 }

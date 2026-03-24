@@ -12,6 +12,7 @@ public record GraveResponseDTO(
         GraveType graveType,
         int bodyCapacity,
         AreaType areaType,
+        boolean active,
         Long blockId) {
 
 }
