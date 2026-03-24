@@ -1,5 +1,6 @@
 package br.com.sgc.api.cemetery.service;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.stereotype.Service;
@@ -40,6 +41,13 @@ public class GraveService {
         graveEntity.setBlock(blockEntity);
 
         return mapper.toResponse(graveRepository.save(graveEntity));
+    }
+
+    public List<GraveResponseDTO> findAll() {
+        return graveRepository.findAll()
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
     }
 
     private void validateAreaTypeAndGraveType(AreaType areaType, GraveType graveType) {
