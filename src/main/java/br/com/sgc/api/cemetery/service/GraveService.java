@@ -6,6 +6,7 @@ import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 import br.com.sgc.api.cemetery.dto.request.GraveRequestDTO;
+import br.com.sgc.api.cemetery.dto.request.GraveUpdateRequestDTO;
 import br.com.sgc.api.cemetery.dto.response.GraveResponseDTO;
 import br.com.sgc.api.cemetery.entity.GraveEntity;
 import br.com.sgc.api.cemetery.mapper.GraveMapper;
@@ -53,6 +54,19 @@ public class GraveService {
 
     public GraveResponseDTO findById(Long id) {
         return mapper.toResponse(findGraveById(id));
+    }
+
+    public GraveResponseDTO update(Long id, GraveUpdateRequestDTO request) {
+        var graveEntity = findGraveById(id);
+
+        validateAreaTypeAndGraveType(request.areaType(), request.graveType());
+        validateBodyCapacity(request.graveType(), request.bodyCapacity());
+
+        graveEntity.setGraveType(request.graveType());
+        graveEntity.setBodyCapacity(request.bodyCapacity());
+        graveEntity.setAreaType(request.areaType());
+
+        return mapper.toResponse(graveRepository.save(graveEntity));
     }
 
     private void validateAreaTypeAndGraveType(AreaType areaType, GraveType graveType) {
