@@ -7,11 +7,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public record GraveRequestDTO(
-        @Positive int number,
-        @NotNull GraveType graveType,
-        @Positive int bodyCapacity,
-        @NotNull AreaType areaType,
-        boolean active,
-        @NotNull @Positive Long blockId) {
+                @Positive int number,
+                @NotNull GraveType graveType,
+                @Positive int bodyCapacity,
+                @NotNull AreaType areaType,
+                @NotNull @Positive Long blockId) {
 
 }

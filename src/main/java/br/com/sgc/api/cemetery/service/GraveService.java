@@ -13,6 +13,7 @@ import br.com.sgc.api.cemetery.mapper.GraveMapper;
 import br.com.sgc.api.cemetery.repositories.BlockRepository;
 import br.com.sgc.api.cemetery.repositories.GraveRepository;
 import br.com.sgc.api.common.enums.AreaType;
+import br.com.sgc.api.common.enums.GraveStatus;
 import br.com.sgc.api.common.enums.GraveType;
 import br.com.sgc.api.common.exception.BusinessException;
 import br.com.sgc.api.common.exception.ResourceNotFoundException;
@@ -25,6 +26,8 @@ public class GraveService {
     private final GraveRepository graveRepository;
     private final BlockRepository blockRepository;
     private final GraveMapper mapper;
+
+    // ------------------ CRUD
 
     public GraveResponseDTO save(GraveRequestDTO request) {
 
@@ -41,6 +44,7 @@ public class GraveService {
 
         var graveEntity = mapper.toEntity(request);
         graveEntity.setActive(true);
+        graveEntity.setStatus(GraveStatus.AVAILABLE);
         graveEntity.setBlock(blockEntity);
 
         return mapper.toResponse(graveRepository.save(graveEntity));
@@ -77,6 +81,110 @@ public class GraveService {
         return mapper.toResponse(graveRepository.save(graveEntity));
     }
 
+    // ------------------ Find
+
+    private GraveEntity findGraveById(Long id) {
+        if (id == null) {
+            throw new BusinessException("Id não pode ser nulo.");
+        }
+
+        return graveRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Sepultura não encontrada."));
+    }
+
+    private GraveEntity findActiveGraveById(Long id) {
+        var graveEntity = findGraveById(id);
+
+        if (!graveEntity.isActive()) {
+            throw new BusinessException("Sepultura inativa");
+        }
+
+        return graveEntity;
+    }
+
+    // ------------------ Transitions
+
+    // --- Status
+
+    public void occupy(Long graveId) {
+        var graveEntity = findActiveGraveById(graveId);
+
+        if (graveEntity.getStatus() != GraveStatus.AVAILABLE) {
+            throw new BusinessException("Sepultura não está disponível.");
+        }
+
+        graveEntity.setStatus(GraveStatus.OCCUPIED);
+        graveRepository.save(graveEntity);
+    }
+
+    public void release(Long graveId) {
+        var graveEntity = findActiveGraveById(graveId);
+
+        if (graveEntity.getStatus() != GraveStatus.OCCUPIED) {
+            throw new BusinessException("Sepultura não está ocupada.");
+        }
+
+        graveEntity.setStatus(GraveStatus.AVAILABLE);
+        graveRepository.save(graveEntity);
+    }
+
+    public void sendToMaintenance(Long graveId) {
+        var graveEntity = findActiveGraveById(graveId);
+
+        if (graveEntity.getStatus() != GraveStatus.AVAILABLE) {
+            throw new BusinessException("Sepultura não está disponível.");
+        }
+
+        graveEntity.setStatus(GraveStatus.MAINTENANCE);
+        graveRepository.save(graveEntity);
+    }
+
+    public void finishMaintenance(Long graveId) {
+        var graveEntity = findActiveGraveById(graveId);
+
+        if (graveEntity.getStatus() != GraveStatus.MAINTENANCE) {
+            throw new BusinessException("Sepultura não está em manutenção.");
+        }
+
+        graveEntity.setStatus(GraveStatus.AVAILABLE);
+        graveRepository.save(graveEntity);
+    }
+
+    // --- blockage
+
+    public void markAsBlocked(Long graveId, String reason) {
+        var graveEntity = findActiveGraveById(graveId);
+
+        graveEntity.setBlocked(true);
+        graveEntity.setReason(reason);
+
+        graveRepository.save(graveEntity);
+    }
+
+    public void markAsUnblocked(Long graveId, String reason) {
+        var graveEntity = findActiveGraveById(graveId);
+
+        graveEntity.setBlocked(false);
+        graveEntity.setReason(reason);
+
+        graveRepository.save(graveEntity);
+    }
+
+    // --- Activation
+
+    public void activate(Long graveId) {
+        var graveEntity = findActiveGraveById(graveId);
+
+        if (graveEntity.isActive()) {
+            throw new BusinessException("Está sepultura já está ativa");
+        }
+
+        graveEntity.setActive(true);
+        graveRepository.save(graveEntity);
+    }
+
+    // ------------------ Validations
+
     private void validateAreaTypeAndGraveType(AreaType areaType, GraveType graveType) {
         if (areaType == AreaType.COMMON && graveType != GraveType.EARTH) {
             throw new BusinessException("Sepultura de área comum deve ser do tipo terra.");
@@ -95,15 +203,6 @@ public class GraveService {
         if (graveType == GraveType.MAUSOLEUM && bodyCapacity > 4) {
             throw new BusinessException("Jazigo deve ter capacidade máxima de 4 corpos.");
         }
-    }
-
-    private GraveEntity findGraveById(Long id) {
-        if (id == null) {
-            throw new BusinessException("Id não pode ser nulo.");
-        }
-
-        return graveRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Sepultura não encontrada."));
     }
 
 }

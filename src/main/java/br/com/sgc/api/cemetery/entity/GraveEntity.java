@@ -1,6 +1,7 @@
 package br.com.sgc.api.cemetery.entity;
 
 import br.com.sgc.api.common.enums.AreaType;
+import br.com.sgc.api.common.enums.GraveStatus;
 import br.com.sgc.api.common.enums.GraveType;
 
 import jakarta.persistence.Column;
@@ -44,12 +45,22 @@ public class GraveEntity {
     @Column(name = "gra_body_capacity", nullable = false)
     private int bodyCapacity;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gra_area_type", nullable = false)
+    private AreaType areaType;
+
     @Column(name = "gra_active")
     private boolean active;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "gra_area_type", nullable = false)
-    private AreaType areaType;
+    @Column(name = "gra_status", nullable = false)
+    private GraveStatus status;
+
+    @Column(name = "gra_blocked")
+    private boolean blocked;
+
+    @Column(name = "gra_reason")
+    private String reason;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_gra_blo_id", nullable = false)
