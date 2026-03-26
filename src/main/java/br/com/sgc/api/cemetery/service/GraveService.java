@@ -15,8 +15,9 @@ import br.com.sgc.api.cemetery.repositories.GraveRepository;
 import br.com.sgc.api.common.enums.AreaType;
 import br.com.sgc.api.common.enums.GraveStatus;
 import br.com.sgc.api.common.enums.GraveType;
-import br.com.sgc.api.common.exception.BusinessException;
-import br.com.sgc.api.common.exception.ResourceNotFoundException;
+import br.com.sgc.api.common.exception.classes.BusinessException;
+import br.com.sgc.api.common.exception.classes.ConflictException;
+import br.com.sgc.api.common.exception.classes.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,7 +36,7 @@ public class GraveService {
         validateBodyCapacity(request.graveType(), request.bodyCapacity());
 
         if (graveRepository.existsByNumberAndBlockId(request.number(), request.blockId())) {
-            throw new BusinessException("Já existe uma sepultura com essse número nessa quadra.");
+            throw new ConflictException("Já existe uma sepultura com essse número nessa quadra.");
         }
 
         var blockEntity = blockRepository

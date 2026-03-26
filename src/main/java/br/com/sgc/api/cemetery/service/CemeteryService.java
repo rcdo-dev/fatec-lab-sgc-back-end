@@ -11,8 +11,9 @@ import br.com.sgc.api.cemetery.entity.CemeteryEntity;
 import br.com.sgc.api.cemetery.mapper.CemeteryMapper;
 import br.com.sgc.api.cemetery.repositories.CemeteryRepository;
 
-import br.com.sgc.api.common.exception.BusinessException;
-import br.com.sgc.api.common.exception.ResourceNotFoundException;
+import br.com.sgc.api.common.exception.classes.BusinessException;
+import br.com.sgc.api.common.exception.classes.ConflictException;
+import br.com.sgc.api.common.exception.classes.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +26,7 @@ public class CemeteryService {
     public CemeteryResponseDTO save(CemeteryRequestDTO request) {
 
         if (cemeteryRepository.existsByNameIgnoreCase(request.name())) {
-            throw new BusinessException("Já existe um cemitério cadastrado com esse nome.");
+            throw new ConflictException("Já existe um cemitério cadastrado com esse nome.");
         }
 
         /**
@@ -55,7 +56,7 @@ public class CemeteryService {
         var cemetery = findCemeteryById(id);
 
         if (cemeteryRepository.existsByNameIgnoreCaseAndIdNot(request.name(), id)) {
-            throw new BusinessException("Já existe um cemitério cadastrado com esse nome.");
+            throw new ConflictException("Já existe um cemitério cadastrado com esse nome.");
         }
 
         cemetery.setName(request.name());

@@ -12,8 +12,9 @@ import br.com.sgc.api.cemetery.entity.BlockEntity;
 import br.com.sgc.api.cemetery.mapper.BlockMapper;
 import br.com.sgc.api.cemetery.repositories.BlockRepository;
 import br.com.sgc.api.cemetery.repositories.CemeteryRepository;
-import br.com.sgc.api.common.exception.BusinessException;
-import br.com.sgc.api.common.exception.ResourceNotFoundException;
+import br.com.sgc.api.common.exception.classes.BusinessException;
+import br.com.sgc.api.common.exception.classes.ConflictException;
+import br.com.sgc.api.common.exception.classes.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +27,7 @@ public class BlockService {
 
     public BlockResponseDTO save(BlockRequestDTO request) {
         if (blockRepository.existsByNumberAndCemeteryId(request.number(), request.cemeteryId())) {
-            throw new BusinessException("Já existe uma quadra com esse número neste cemitério.");
+            throw new ConflictException("Já existe uma quadra com esse número neste cemitério.");
         }
 
         var cemeteryEntity = cemeteryRepository
