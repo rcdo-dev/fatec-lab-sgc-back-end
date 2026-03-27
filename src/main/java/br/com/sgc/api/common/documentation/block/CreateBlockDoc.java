@@ -1,4 +1,4 @@
-package br.com.sgc.api.common.documentation.cemetery;
+package br.com.sgc.api.common.documentation.block;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 import org.springframework.http.MediaType;
 
-import br.com.sgc.api.cemetery.dto.response.CemeteryResponseDTO;
+import br.com.sgc.api.cemetery.dto.response.BlockResponseDTO;
 import br.com.sgc.api.common.exception.ApiErrorResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,14 +19,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Operation(summary = "Cadastrar cemitério.")
+@Operation(summary = "Cadastrar quadra.")
 @ApiResponses(value = {
     @ApiResponse(
         responseCode = "201",
-        description = "Cemitério criado com sucesso.",
+        description = "Quadra criada com sucesso,",
         content = @Content(
             mediaType = MediaType.APPLICATION_JSON_VALUE,
-            schema = @Schema(implementation = CemeteryResponseDTO.class)
+            schema = @Schema(implementation = BlockResponseDTO.class)
         )
     ),
     @ApiResponse(
@@ -43,7 +43,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
                             "status": 400,
                             "error": "Invalid field",
                             "message": "Campo com dados inválidos.",
-                            "path": "/api/cemeteries"
+                            "path": "/api/blocks"
                         }
                         """
             )
@@ -62,14 +62,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
                             "timestamp": "2026-03-26T10:15:30",
                             "status": 409,
                             "error": "Business rule violation",
-                            "message": "Já existe um cemitério cadastrado com esse nome.",
-                            "path": "/api/cemeteries"
+                            "message": "Já existe uma quadra cadastrada com esse número.",
+                            "path": "/api/blocks"
                         }
                         """
             )
         )
     )
 })
-public @interface CreateCemeteryDoc {
+public @interface CreateBlockDoc {
 
 }

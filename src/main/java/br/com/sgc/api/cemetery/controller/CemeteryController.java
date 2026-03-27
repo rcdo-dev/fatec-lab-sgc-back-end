@@ -22,6 +22,7 @@ import br.com.sgc.api.common.documentation.cemetery.FindAllCemeteryDoc;
 import br.com.sgc.api.common.documentation.cemetery.FindCemeteryByIdDoc;
 import br.com.sgc.api.common.documentation.cemetery.InactivateCemeteryDoc;
 import br.com.sgc.api.common.documentation.cemetery.UpdateCemeteryDoc;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import jakarta.validation.Valid;
@@ -41,7 +42,10 @@ public class CemeteryController {
 
         var response = cemeteryService.save(request);
 
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(response.id()).toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(response.id())
+                .toUri();
 
         return ResponseEntity.created(uri).body(response);
     }

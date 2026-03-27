@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 
 import br.com.sgc.api.cemetery.dto.response.CemeteryResponseDTO;
 import br.com.sgc.api.common.exception.ApiErrorResponse;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -42,7 +43,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
                             "status": 400,
                             "error": "Invalid field",
                             "message": "Campo com dados inválidos.",
-                            "path": "/api/cemetery"
+                            "path": "/api/cemeteries"
                         }
                         """
             )
@@ -62,7 +63,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
                             "status": 404,
                             "error": "Resource not found.",
                             "message": "O recurso solicitado não existe/não foi encontrado.",
-                            "path": "/api/cemetery"
+                            "path": "/api/cemeteries"
                         }
                         """
             )
@@ -70,7 +71,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
     ),
     @ApiResponse(
         responseCode = "409",
-        description = "Já existe um cemitério com esse nome. Teste",
+        description = "Já existe um cemitério com esse nome.",
         content = @Content(
             mediaType = MediaType.APPLICATION_JSON_VALUE,
             schema = @Schema(implementation = ApiErrorResponse.class),
@@ -82,7 +83,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
                             "status": 409,
                             "error": "Business rule violation",
                             "message": "Já existe um cemitério cadastrado com esse nome.",
-                            "path": "/api/cemetery"
+                            "path": "/api/cemeteries"
                         }
                         """
             )

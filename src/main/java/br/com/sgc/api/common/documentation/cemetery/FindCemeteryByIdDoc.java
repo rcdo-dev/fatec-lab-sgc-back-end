@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Operation(summary = "Buscar cemitério por Id.")
+@Operation(summary = "Buscar cemitério por ID.")
 @ApiResponses(value = {
     @ApiResponse(
         responseCode = "200",
@@ -43,7 +43,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
                             "status": 404,
                             "error": "Resource not found.",
                             "message": "O recurso solicitado não existe/não foi encontrado.",
-                            "path": "/api/cemetery"
+                            "path": "/api/cemeteries"
                         }
                         """
             )

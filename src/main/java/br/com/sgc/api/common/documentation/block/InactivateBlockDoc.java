@@ -1,4 +1,4 @@
-package br.com.sgc.api.common.documentation.cemetery;
+package br.com.sgc.api.common.documentation.block;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 import org.springframework.http.MediaType;
 
-import br.com.sgc.api.cemetery.dto.response.CemeteryResponseDTO;
+import br.com.sgc.api.cemetery.dto.response.BlockResponseDTO;
 import br.com.sgc.api.common.exception.ApiErrorResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,57 +19,49 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Operation(summary = "Cadastrar cemitério.")
+@Operation(summary = "Inativar quadra.")
 @ApiResponses(value = {
     @ApiResponse(
-        responseCode = "201",
-        description = "Cemitério criado com sucesso.",
+        responseCode = "200",
+        description = "Quadra inativada com sucesso.",
         content = @Content(
             mediaType = MediaType.APPLICATION_JSON_VALUE,
-            schema = @Schema(implementation = CemeteryResponseDTO.class)
-        )
-    ),
-    @ApiResponse(
-        responseCode = "400",
-        description = "Dados inválidos.",
-        content = @Content(
-            mediaType = MediaType.APPLICATION_JSON_VALUE,
-            schema = @Schema(implementation = ApiErrorResponse.class),
+            schema = @Schema(implementation = BlockResponseDTO.class),
             examples = @ExampleObject(
-                name = "Erro de validação.",
+                name = "Quadra inativada",
                 value = """
                         {
-                            "timestamp": "2026-03-26T10:15:30",
-                            "status": 400,
-                            "error": "Invalid field",
-                            "message": "Campo com dados inválidos.",
-                            "path": "/api/cemeteries"
+                            "id": 1,
+                            "number": 12,
+                            "active": false,
+                            "cemeteryId": 1,
+                            "description": "Setor leste"
                         }
                         """
             )
         )
     ),
     @ApiResponse(
-        responseCode = "409",
-        description = "Já existe um cemitério com esse nome. Teste",
+        responseCode = "404",
+        description = "Quadra não encontrada.",
         content = @Content(
             mediaType = MediaType.APPLICATION_JSON_VALUE,
             schema = @Schema(implementation = ApiErrorResponse.class),
             examples = @ExampleObject(
-                name = "Conflito de negócio.",
+                name = "Recurso não encontrado.",
                 value = """
                         {
                             "timestamp": "2026-03-26T10:15:30",
-                            "status": 409,
-                            "error": "Business rule violation",
-                            "message": "Já existe um cemitério cadastrado com esse nome.",
-                            "path": "/api/cemeteries"
+                            "status": 404,
+                            "error": "Resource not found.",
+                            "message": "O recurso solicitado não existe/não foi encontrado.",
+                            "path": "/api/blocks"
                         }
                         """
             )
         )
     )
 })
-public @interface CreateCemeteryDoc {
+public @interface InactivateBlockDoc {
 
 }

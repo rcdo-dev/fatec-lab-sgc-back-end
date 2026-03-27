@@ -1,4 +1,4 @@
-package br.com.sgc.api.common.documentation.cemetery;
+package br.com.sgc.api.common.documentation.block;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 import org.springframework.http.MediaType;
 
-import br.com.sgc.api.cemetery.dto.response.CemeteryResponseDTO;
+import br.com.sgc.api.cemetery.dto.response.BlockResponseDTO;
 import br.com.sgc.api.common.exception.ApiErrorResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,30 +19,19 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Operation(summary = "Inativar cemitério")
+@Operation(summary = "Buscar quadra por ID.")
 @ApiResponses(value = {
     @ApiResponse(
         responseCode = "200",
-        description = "Cemitério inativado com sucesso.",
+        description = "Quadra encontrada.",
         content = @Content(
             mediaType = MediaType.APPLICATION_JSON_VALUE,
-            schema = @Schema(implementation = CemeteryResponseDTO.class),
-            examples = @ExampleObject(
-                name = "Cemitério inativado",
-                value = """
-                        {
-                            "id": 1,
-                            "name": "Cemitério do Cambiri.",
-                            "foundation": "1983-01-01",
-                            "active": false
-                        }
-                        """
-            )
+            schema = @Schema(implementation = BlockResponseDTO.class)
         )
     ),
     @ApiResponse(
         responseCode = "404",
-        description = "Cemitério não encontrado.",
+        description = "Quadra não encontrada.",
         content = @Content(
             mediaType = MediaType.APPLICATION_JSON_VALUE,
             schema = @Schema(implementation = ApiErrorResponse.class),
@@ -54,13 +43,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
                             "status": 404,
                             "error": "Resource not found.",
                             "message": "O recurso solicitado não existe/não foi encontrado.",
-                            "path": "/api/cemeteries"
+                            "path": "/api/blocks"
                         }
                         """
             )
         )
     )
 })
-public @interface InactivateCemeteryDoc {
+public @interface FindBlockByIdDoc {
 
 }
