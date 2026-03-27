@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,17 +13,21 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.sgc.api.cemetery.dto.request.BlockRequestDTO;
 import br.com.sgc.api.cemetery.dto.request.BlockUpdateRequestDTO;
 import br.com.sgc.api.cemetery.dto.response.BlockResponseDTO;
+
 import br.com.sgc.api.cemetery.service.BlockService;
+
 import br.com.sgc.api.common.documentation.block.CreateBlockDoc;
 import br.com.sgc.api.common.documentation.block.FindAllBlockDoc;
 import br.com.sgc.api.common.documentation.block.FindBlockByIdDoc;
 import br.com.sgc.api.common.documentation.block.InactivateBlockDoc;
 import br.com.sgc.api.common.documentation.block.UpdateBlockDoc;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import jakarta.validation.Valid;

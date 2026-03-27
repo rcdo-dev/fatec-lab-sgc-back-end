@@ -1,4 +1,4 @@
-package br.com.sgc.api.common.documentation.block;
+package br.com.sgc.api.common.documentation.grave;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 import org.springframework.http.MediaType;
 
-import br.com.sgc.api.cemetery.dto.response.BlockResponseDTO;
+import br.com.sgc.api.cemetery.dto.response.GraveResponseDTO;
 import br.com.sgc.api.common.exception.ApiErrorResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,14 +19,31 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Operation(summary = "Atualizar quadra.")
+@Operation(summary = "Atualizar sepultura.")
 @ApiResponses(value = {
     @ApiResponse(
         responseCode = "200",
-        description = "Quadra atualizada com sucesso.",
+        description = "Sepultura atualizada com sucesso.",
         content = @Content(
             mediaType = MediaType.APPLICATION_JSON_VALUE,
-            schema = @Schema(implementation = BlockResponseDTO.class)
+            schema = @Schema(implementation = GraveResponseDTO.class),
+            examples = @ExampleObject(
+                name = "Sepultura criada.",
+                value = """
+                        {
+                            "id": 1,
+                            "number": 127,
+                            "graveType": "MAUSOLEUM",
+                            "bodyCapacity": 4,
+                            "areaType": "PERPETUAL",
+                            "status": "AVAILABLE",
+                            "blocked": null,
+                            "reason": null,
+                            "blockId": 1,
+                            "active": true
+                        }
+                        """
+            )
         )
     ),
     @ApiResponse(
@@ -43,7 +60,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
                             "status": 400,
                             "error": "Invalid field",
                             "message": "Campo com dados inválidos.",
-                            "path": "/api/blocks"
+                            "path": "/api/graves"
                         }
                         """
             )
@@ -51,7 +68,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
     ),
     @ApiResponse(
         responseCode = "404",
-        description = "Quadra não encontrada.",
+        description = "Sepultura não encontrada.",
         content = @Content(
             mediaType = MediaType.APPLICATION_JSON_VALUE,
             schema = @Schema(implementation = ApiErrorResponse.class),
@@ -63,7 +80,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
                             "status": 404,
                             "error": "Resource not found.",
                             "message": "O recurso solicitado não existe/não foi encontrado.",
-                            "path": "/api/blocks"
+                            "path": "/api/graves"
                         }
                         """
             )
@@ -82,14 +99,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
                             "timestamp": "2026-03-26T10:15:30",
                             "status": 409,
                             "error": "Business rule violation",
-                            "message": "Já existe uma quadra cadastrada com esse número.",
-                            "path": "/api/blocks"
+                            "message": "Já existe uma sepultura cadastrada com esse número.",
+                            "path": "/api/graves"
                         }
                         """
             )
         )
     )
 })
-public @interface UpdateBlockDoc {
+public @interface UpdateGraveDoc {
 
 }
