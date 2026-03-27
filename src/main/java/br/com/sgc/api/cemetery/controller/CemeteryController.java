@@ -18,9 +18,10 @@ import br.com.sgc.api.cemetery.dto.request.CemeteryRequestDTO;
 import br.com.sgc.api.cemetery.dto.response.CemeteryResponseDTO;
 import br.com.sgc.api.cemetery.service.CemeteryService;
 import br.com.sgc.api.common.documentation.cemetery.CreateCemeteryDoc;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import br.com.sgc.api.common.documentation.cemetery.FindAllCemeteryDoc;
+import br.com.sgc.api.common.documentation.cemetery.FindCemeteryByIdDoc;
+import br.com.sgc.api.common.documentation.cemetery.InactivateCemeteryDoc;
+import br.com.sgc.api.common.documentation.cemetery.UpdateCemeteryDoc;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import jakarta.validation.Valid;
@@ -45,26 +46,26 @@ public class CemeteryController {
         return ResponseEntity.created(uri).body(response);
     }
 
-    @Operation(summary = "Listar cemitérios.")
+    @FindAllCemeteryDoc
     @GetMapping
     public ResponseEntity<List<CemeteryResponseDTO>> findAll() {
         return ResponseEntity.ok(cemeteryService.findAll());
     }
 
-    @Operation(summary = "Buscar cemitério por id.")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Cemitério encontrado."),
-            @ApiResponse(responseCode = "404", description = "Cemitério não encontrado.") })
+    @FindCemeteryByIdDoc
     @GetMapping("/{id}")
     public ResponseEntity<CemeteryResponseDTO> findById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(cemeteryService.findById(id));
     }
 
+    @UpdateCemeteryDoc
     @PutMapping("/{id}")
     public ResponseEntity<CemeteryResponseDTO> update(@PathVariable("id") Long id,
             @Valid @RequestBody CemeteryRequestDTO request) {
         return ResponseEntity.ok(cemeteryService.update(id, request));
     }
 
+    @InactivateCemeteryDoc
     @PatchMapping("/{id}/inactive")
     public ResponseEntity<CemeteryResponseDTO> inactivate(@PathVariable Long id) {
         return ResponseEntity.ok(cemeteryService.inactivate(id));
