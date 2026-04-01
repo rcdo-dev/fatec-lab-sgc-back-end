@@ -37,7 +37,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
                             "bodyCapacity": 2,
                             "areaType": "COMMON",
                             "status": "AVAILABLE",
-                            "blocked": null,
+                            "blocked": false,
                             "reason": null,
                             "blockId": 1,
                             "active": true
