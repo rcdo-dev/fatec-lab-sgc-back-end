@@ -37,8 +37,8 @@ public class BlockEntity {
     private boolean active;
 
     /**
-     * ManyToOne = dono da relação (Sempre tem a FK).
-     * Responsável por gravar a relação no banco de dados
+     * ManyToOne = dono da relação (Sempre tem a FK). Responsável por gravar a
+     * relação no banco de dados
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_blo_cem_id", nullable = false)

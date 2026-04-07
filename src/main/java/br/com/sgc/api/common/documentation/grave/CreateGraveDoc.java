@@ -68,7 +68,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
     ),
     @ApiResponse(
         responseCode = "409",
-        description = "Já existe um cemitério com esse nome. Teste",
+        description = "Já existe uma sepultura com esse nome.",
         content = @Content(
             mediaType = MediaType.APPLICATION_JSON_VALUE,
             schema = @Schema(implementation = ApiErrorResponse.class),
