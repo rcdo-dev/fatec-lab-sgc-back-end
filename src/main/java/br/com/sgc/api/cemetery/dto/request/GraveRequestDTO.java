@@ -16,7 +16,7 @@ public record GraveRequestDTO(
         int number,
 
         @Schema(description = "Tipo da sepultura (EARTH / MAUSOLEUM).", example = "EARTH")
-        @NotNull(message = "validation.assigned.value.cannot.be.null")
+        @NotNull(message = "{validation.assigned.value.cannot.be.null}")
         GraveType graveType,
 
         @Schema(description = "Quantidade de corpos suportados pela sepultura.", example = "2")
@@ -24,11 +24,11 @@ public record GraveRequestDTO(
         int bodyCapacity,
 
         @Schema(description = "Tipo de área da sepultura (COMMON / PERPETUAL).", example = "COMMON")
-        @NotNull(message = "validation.assigned.value.cannot.be.null")
+        @NotNull(message = "{validation.assigned.value.cannot.be.null}")
         AreaType areaType,
 
         @Schema(description = "ID da quadra em que a sepultura está vinculada.", example = "1")
-        @NotNull(message = "validation.assigned.value.cannot.be.null")
+        @NotNull(message = "{validation.assigned.value.cannot.be.null}")
         @Positive(message = "{validation.required.positive.integer}")
         Long blockId) {
 

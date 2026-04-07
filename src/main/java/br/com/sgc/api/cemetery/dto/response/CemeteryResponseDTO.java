@@ -10,11 +10,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @JsonPropertyOrder({ "id", "name", "foundation", "active" })
 public record CemeteryResponseDTO(
 
-                @Schema(description = "Identificador único do cemitério.", example = "1", accessMode = Schema.AccessMode.READ_ONLY) Long id,
+                @Schema(description = "Identificador único do cemitério.", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
+                Long id,
 
-                @Schema(description = "Nome do cemitério.", example = "Cemitério do Cambiri.") String name,
+                @Schema(description = "Nome do cemitério.", example = "Cemitério do Cambiri.")
+                String name,
 
-                @Schema(description = "Data de fundação do cemitério.", example = "1983-01-01") LocalDate foundation,
+                @Schema(description = "Data de fundação do cemitério.", example = "1983-01-01")
+                LocalDate foundation,
 
-                @Schema(description = "Indica se o cemitério está ativo.", example = "true") boolean active) {
+                @Schema(description = "Indica se o cemitério está ativo.", example = "true")
+                boolean active) {
 }
