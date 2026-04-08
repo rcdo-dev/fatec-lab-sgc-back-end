@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public record CemeteryRequestDTO(
 
         @Schema(description = "Nome do cemitério.", example = "Cemitério do Cambiri")
-        @NotBlank(message = "{validation.cemetery.name}")
+        @NotBlank(message = "{validation.cemetery.name.required}")
         String name,
 
         @Schema(description = "Data de fundação do cemitério.", example = "1983-01-01")

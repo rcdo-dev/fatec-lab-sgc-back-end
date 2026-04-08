@@ -3,6 +3,8 @@ package br.com.sgc.api.cemetery.service;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import br.com.sgc.api.cemetery.dto.request.CemeteryRequestDTO;
@@ -22,19 +24,18 @@ import lombok.RequiredArgsConstructor;
 public class CemeteryService {
     private final CemeteryRepository cemeteryRepository;
     private final CemeteryMapper mapper;
+    private final MessageSource messageSource;
 
     public CemeteryResponseDTO save(CemeteryRequestDTO request) {
 
         if (cemeteryRepository.existsByNameIgnoreCase(request.name())) {
-            throw new ConflictException("Já existe um cemitério cadastrado com esse nome.");
+            throw new ConflictException(getMessage("cemetery.name.already.exists"));
         }
 
         /**
          * Objects.requireNonNull() -> Verifica se o objeto em questão é nulo.
          */
-        var cemetery = Objects.requireNonNull(
-                mapper.toEntity(request),
-                "Erro ao mapear CemeteryRequestDTO para CemeteryEntity.");
+        var cemetery = Objects.requireNonNull(mapper.toEntity(request), getMessage("error.internal"));
 
         var cemeterySaved = cemeteryRepository.save(cemetery);
 
@@ -42,10 +43,7 @@ public class CemeteryService {
     }
 
     public List<CemeteryResponseDTO> findAll() {
-        return cemeteryRepository.findAll()
-                .stream()
-                .map(mapper::toResponse)
-                .toList();
+        return cemeteryRepository.findAll().stream().map(mapper::toResponse).toList();
     }
 
     public CemeteryResponseDTO findById(Long id) {
@@ -56,7 +54,7 @@ public class CemeteryService {
         var cemetery = findCemeteryById(id);
 
         if (cemeteryRepository.existsByNameIgnoreCaseAndIdNot(request.name(), id)) {
-            throw new ConflictException("Já existe um cemitério cadastrado com esse nome.");
+            throw new ConflictException(getMessage("cemetery.name.already.exists"));
         }
 
         cemetery.setName(request.name());
@@ -77,10 +75,16 @@ public class CemeteryService {
 
     private CemeteryEntity findCemeteryById(Long id) {
         if (id == null) {
-            throw new BusinessException("Id não pode ser nulo.");
+            throw new BusinessException(getMessage("cemetery.id.required"));
+
         }
 
         return cemeteryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cemitério não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException(getMessage("cemetery.not.found")));
+
+    }
+
+    private String getMessage(String key) {
+        return messageSource.getMessage(key, null, "Messagem nao encontrada: " + key, LocaleContextHolder.getLocale());
     }
 }
