@@ -35,7 +35,8 @@ public class CemeteryService {
         /**
          * Objects.requireNonNull() -> Verifica se o objeto em questão é nulo.
          */
-        var cemetery = Objects.requireNonNull(mapper.toEntity(request), getMessage("error.internal"));
+        var cemetery = Objects.requireNonNull(mapper.toEntity(request),
+                getMessage("validation.assigned.value.cannot.be.null"));
 
         var cemeterySaved = cemeteryRepository.save(cemetery);
 
@@ -85,6 +86,8 @@ public class CemeteryService {
     }
 
     private String getMessage(String key) {
-        return messageSource.getMessage(key, null, "Messagem nao encontrada: " + key, LocaleContextHolder.getLocale());
+        return messageSource.getMessage(
+                Objects.requireNonNull(key, getMessage("validation.assigned.value.cannot.be.null")), null,
+                "Messagem nao encontrada: " + key, LocaleContextHolder.getLocale());
     }
 }
