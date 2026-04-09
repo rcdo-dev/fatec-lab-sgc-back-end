@@ -86,8 +86,7 @@ public class CemeteryService {
     }
 
     private String getMessage(String key) {
-        return messageSource.getMessage(
-                Objects.requireNonNull(key, getMessage("validation.assigned.value.cannot.be.null")), null,
-                "Messagem nao encontrada: " + key, LocaleContextHolder.getLocale());
+        return messageSource.getMessage(Objects.requireNonNull(key), null, "Messagem nao encontrada: " + key,
+                LocaleContextHolder.getLocale());
     }
 }

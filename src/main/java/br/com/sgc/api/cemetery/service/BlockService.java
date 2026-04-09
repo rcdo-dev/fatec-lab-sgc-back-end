@@ -27,12 +27,12 @@ public class BlockService {
 
     public BlockResponseDTO save(BlockRequestDTO request) {
         if (blockRepository.existsByNumberAndCemeteryId(request.number(), request.cemeteryId())) {
-            throw new ConflictException("Já existe uma quadra com esse número neste cemitério.");
+            throw new ConflictException("block.number.already.exists");
         }
 
         var cemeteryEntity = cemeteryRepository
-                .findById(Objects.requireNonNull(request.cemeteryId(), "O Id do cemitério não pode ser nulo."))
-                .orElseThrow(() -> new ResourceNotFoundException("Cemitério não encontrado."));
+                .findById(Objects.requireNonNull(request.cemeteryId(), "cemetery.id.required"))
+                .orElseThrow(() -> new ResourceNotFoundException("cemetery.not.found"));
 
         var blockEntity = mapper.toEntity(request);
         blockEntity.setActive(true);
@@ -69,11 +69,11 @@ public class BlockService {
 
     private BlockEntity findBlockById(Long id) {
         if (id == null) {
-            throw new BusinessException("Id não pode ser nulo.");
+            throw new BusinessException("block.id.required");
         }
 
         return blockRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Quadra não encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("block.not.found"));
     }
 
 }
