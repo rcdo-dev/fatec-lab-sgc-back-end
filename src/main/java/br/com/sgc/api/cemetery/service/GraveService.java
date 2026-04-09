@@ -36,12 +36,12 @@ public class GraveService {
         validateBodyCapacity(request.graveType(), request.bodyCapacity());
 
         if (graveRepository.existsByNumberAndBlockId(request.number(), request.blockId())) {
-            throw new ConflictException("Já existe uma sepultura com essse número nessa quadra.");
+            throw new ConflictException("grave.number.already.exists");
         }
 
         var blockEntity = blockRepository
-                .findById(Objects.requireNonNull(request.blockId(), "O Id da quadra não pode ser nulo"))
-                .orElseThrow(() -> new ResourceNotFoundException("Quadra não encontrada."));
+                .findById(Objects.requireNonNull(request.blockId(), "block.id.required"))
+                .orElseThrow(() -> new ResourceNotFoundException("block.not.found"));
 
         var graveEntity = mapper.toEntity(request);
         graveEntity.setActive(true);
@@ -86,18 +86,18 @@ public class GraveService {
 
     private GraveEntity findGraveById(Long id) {
         if (id == null) {
-            throw new BusinessException("Id não pode ser nulo.");
+            throw new BusinessException("grave.id.required");
         }
 
         return graveRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Sepultura não encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("grave.not.found"));
     }
 
     private GraveEntity findActiveGraveById(Long id) {
         var graveEntity = findGraveById(id);
 
         if (!graveEntity.isActive()) {
-            throw new BusinessException("Sepultura inativa");
+            throw new BusinessException("grave.inactive");
         }
 
         return graveEntity;
@@ -111,7 +111,7 @@ public class GraveService {
         var graveEntity = findActiveGraveById(graveId);
 
         if (graveEntity.getStatus() != GraveStatus.AVAILABLE) {
-            throw new BusinessException("Sepultura não está disponível.");
+            throw new BusinessException("grave.unavailable");
         }
 
         graveEntity.setStatus(GraveStatus.OCCUPIED);
@@ -122,7 +122,7 @@ public class GraveService {
         var graveEntity = findActiveGraveById(graveId);
 
         if (graveEntity.getStatus() != GraveStatus.OCCUPIED) {
-            throw new BusinessException("Sepultura não está ocupada.");
+            throw new BusinessException("grave.available");
         }
 
         graveEntity.setStatus(GraveStatus.AVAILABLE);
@@ -133,7 +133,7 @@ public class GraveService {
         var graveEntity = findActiveGraveById(graveId);
 
         if (graveEntity.getStatus() != GraveStatus.AVAILABLE) {
-            throw new BusinessException("Sepultura não está disponível.");
+            throw new BusinessException("grave.unavailable");
         }
 
         graveEntity.setStatus(GraveStatus.MAINTENANCE);
@@ -144,7 +144,7 @@ public class GraveService {
         var graveEntity = findActiveGraveById(graveId);
 
         if (graveEntity.getStatus() != GraveStatus.MAINTENANCE) {
-            throw new BusinessException("Sepultura não está em manutenção.");
+            throw new BusinessException("grave.available");
         }
 
         graveEntity.setStatus(GraveStatus.AVAILABLE);
@@ -177,7 +177,7 @@ public class GraveService {
         var graveEntity = findActiveGraveById(graveId);
 
         if (graveEntity.isActive()) {
-            throw new BusinessException("Está sepultura já está ativa");
+            throw new BusinessException("grave.active");
         }
 
         graveEntity.setActive(true);
@@ -188,21 +188,21 @@ public class GraveService {
 
     private void validateAreaTypeAndGraveType(AreaType areaType, GraveType graveType) {
         if (areaType == AreaType.COMMON && graveType != GraveType.EARTH) {
-            throw new BusinessException("Sepultura de área comum deve ser do tipo terra.");
+            throw new BusinessException("grave.common.area.earth.type");
         }
 
         if (areaType == AreaType.PERPETUAL && graveType != GraveType.EARTH && graveType != GraveType.MAUSOLEUM) {
-            throw new BusinessException("Sepultura perpétua deve ser do tipo terra ou jazigo.");
+            throw new BusinessException("grave.perpetual.earth.mausoleum.type");
         }
     }
 
     private void validateBodyCapacity(GraveType graveType, int bodyCapacity) {
         if (graveType == GraveType.EARTH && bodyCapacity > 2) {
-            throw new BusinessException("Sepultura do tipo terra deve ter capacidade máxima de 2 corpos.");
+            throw new BusinessException("grave.earth.type.capacity");
         }
 
         if (graveType == GraveType.MAUSOLEUM && bodyCapacity > 4) {
-            throw new BusinessException("Jazigo deve ter capacidade máxima de 4 corpos.");
+            throw new BusinessException("grave.mausoleum.type.capacity");
         }
     }
 
