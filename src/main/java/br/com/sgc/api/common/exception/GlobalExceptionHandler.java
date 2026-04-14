@@ -4,6 +4,10 @@ import br.com.sgc.api.common.exception.classes.BusinessException;
 import br.com.sgc.api.common.exception.classes.ConflictException;
 import br.com.sgc.api.common.exception.classes.ResourceNotFoundException;
 
+import java.util.Objects;
+
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -18,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RestControllerAdvice // Esta anotação diz ao Spring: "Observe todos os controllers!".
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
-        // private final MessageSource messageSource;
+        private final MessageSource messageSource;
 
         // Para regra de negócio.
         @ExceptionHandler(BusinessException.class)
@@ -26,7 +30,7 @@ public class GlobalExceptionHandler {
                         HttpServletRequest request) {
                 ApiErrorResponse response = new ApiErrorResponse(
                                 HttpStatus.BAD_REQUEST.value(),
-                                "Business rule violation",
+                                getMessage("exception.error.business.rule.violation"),
                                 ex.getMessage(),
                                 request.getRequestURI());
 
@@ -39,7 +43,7 @@ public class GlobalExceptionHandler {
                         HttpServletRequest request) {
                 ApiErrorResponse response = new ApiErrorResponse(
                                 HttpStatus.NOT_FOUND.value(),
-                                "Resource not found",
+                                getMessage("exception.error.resource.not.found"),
                                 ex.getMessage(),
                                 request.getRequestURI());
 
@@ -52,7 +56,7 @@ public class GlobalExceptionHandler {
                         HttpServletRequest request) {
                 ApiErrorResponse response = new ApiErrorResponse(
                                 HttpStatus.CONFLICT.value(),
-                                "Conflict",
+                                getMessage("exception.error.conflict.business.rule"),
                                 ex.getMessage(),
                                 request.getRequestURI());
 
@@ -65,8 +69,8 @@ public class GlobalExceptionHandler {
                         HttpServletRequest request) {
                 ApiErrorResponse response = new ApiErrorResponse(
                                 HttpStatus.BAD_REQUEST.value(),
-                                "Malformed request",
-                                "O corpo da requisição está inválido ou contém campos em formato incorreto.",
+                                getMessage("exception.error.malformed.request"),
+                                getMessage("exception.message.request.body.invalid"),
                                 request.getRequestURI());
 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
@@ -78,10 +82,15 @@ public class GlobalExceptionHandler {
                         HttpServletRequest request) {
                 ApiErrorResponse response = new ApiErrorResponse(
                                 HttpStatus.BAD_REQUEST.value(),
-                                "Invalid field",
-                                "Campo com dados inválidos.",
+                                getMessage("exception.error.invalid.fields"),
+                                getMessage("exception.message.fields.contain.invalid.data"),
                                 request.getRequestURI());
 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
+
+        private String getMessage(String key) {
+        return messageSource.getMessage(Objects.requireNonNull(key), null, "Messagem nao encontrada: " + key,
+                LocaleContextHolder.getLocale());
+    }
 }

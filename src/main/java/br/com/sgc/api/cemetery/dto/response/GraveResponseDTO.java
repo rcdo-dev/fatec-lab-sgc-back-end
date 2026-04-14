@@ -20,7 +20,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
                 "blockId"
 })
 public record GraveResponseDTO(
-
                 @Schema(description = "Identificador único da sepultura.", example = "1")
                 Long id,
 

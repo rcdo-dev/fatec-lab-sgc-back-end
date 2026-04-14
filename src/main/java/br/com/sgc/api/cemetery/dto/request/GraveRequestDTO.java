@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(title = "Grave Request", description = "DTO de entrada para cadastro de sepultura.")
 public record GraveRequestDTO(
-
         @Schema(description = "Número da sepultura.", example = "127")
         @Positive(message = "{validation.required.positive.integer}")
         int number,

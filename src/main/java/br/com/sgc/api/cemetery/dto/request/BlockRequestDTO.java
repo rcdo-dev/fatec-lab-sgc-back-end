@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(title = "Block Request", description = "DTO de entrada para cadastro de quadras.")
 public record BlockRequestDTO(
-
         @Schema(description = "Número da quadra.", example = "12")
         @Positive(message = "{validation.required.positive.integer}")
         int number,

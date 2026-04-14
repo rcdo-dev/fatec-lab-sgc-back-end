@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(title = "Grave Request Update", description = "DTO de entrada para atualização de dados da sepultura.")
 public record GraveUpdateRequestDTO(
-
         @Schema(description = "Tipo da sepultura (EARTH / MAUSOLEUM).", example = "MAUSOLEUM")
         @NotNull(message = "{validation.assigned.value.cannot.be.null}")
         GraveType graveType,

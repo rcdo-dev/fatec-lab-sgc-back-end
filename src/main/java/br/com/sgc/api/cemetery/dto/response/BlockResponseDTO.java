@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(title = "Block Response", description = "DTO de resposta para quadra.")
 @JsonPropertyOrder({ "id", "number", "decription", "active", "cemeteryId" })
 public record BlockResponseDTO(
-
         @Schema(description = "Identificador único da quadra.", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
         Long id,
 

@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(title = "Cemetery Response", description = "DTO de resposta para cemitério.")
 @JsonPropertyOrder({ "id", "name", "foundation", "active" })
 public record CemeteryResponseDTO(
-
                 @Schema(description = "Identificador único do cemitério.", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
                 Long id,
 

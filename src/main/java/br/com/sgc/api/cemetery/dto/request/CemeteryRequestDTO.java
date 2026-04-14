@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(title = "Cemetery Request", description = "DTO de entrada para cadastro de cemitério.")
 public record CemeteryRequestDTO(
-
         @Schema(description = "Nome do cemitério.", example = "Cemitério do Cambiri")
         @NotBlank(message = "{validation.cemetery.name.required}")
         String name,
