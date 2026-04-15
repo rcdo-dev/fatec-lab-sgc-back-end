@@ -39,7 +39,7 @@ public class GraveEntity {
     /**
      * nullable = false → regra do banco.
      * 
-     * @NotNull → regra da API
+     * @NotNull → regra da API -> sempre no DTO.
      */
     @NotNull
     @Column(name = "gra_body_capacity", nullable = false)
