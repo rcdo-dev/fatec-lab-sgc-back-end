@@ -34,8 +34,6 @@ import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
 
-// Incluir CORS
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/blocks")
