@@ -32,7 +32,7 @@ public class DeceasedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "dec_id")
+    @Column(name = "dec_id", nullable = false)
     private Long id;
 
     @Column(name = "dec_name", nullable = false)

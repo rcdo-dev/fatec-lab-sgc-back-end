@@ -29,7 +29,7 @@ public class DeclarantEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "decla_id")
+    @Column(name = "decla_id", nullable = false)
     private Long id;
 
     @Column(name = "decla_name", nullable = false)
