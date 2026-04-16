@@ -3,8 +3,12 @@ package br.com.sgc.api.person.entity;
 import java.time.LocalDate;
 
 import br.com.sgc.api.common.enums.DeceasedType;
+import br.com.sgc.api.person.entity.embeddable.DocumentInfo;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -13,11 +17,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "deceased")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class DeceasedEntity {
 
     @Id
@@ -38,11 +48,12 @@ public class DeceasedEntity {
     @Column(name = "dec_gender", nullable = false)
     private String gender;
 
-    @Column(name = "dec_cpf", nullable = false)
-    private String cpf;
-
-    @Column(name = "dec_rg", nullable = false)
-    private String rg;
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "rg", column = @Column(name = "dec_rg", nullable = false)),
+        @AttributeOverride(name = "cpf", column = @Column(name = "dec_cpf", nullable = false))
+    })
+    private DocumentInfo document;
 
     @Column(name = "dec_ocuppation", nullable = false)
     private String occupation;
