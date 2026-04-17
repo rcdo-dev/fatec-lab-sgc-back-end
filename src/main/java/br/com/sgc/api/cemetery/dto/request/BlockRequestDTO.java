@@ -20,5 +20,6 @@ public record BlockRequestDTO(
         @Schema(description = "ID do cemitério em que a quadra está vinculada.", example = "1")
         @NotNull(message = "{validation.assigned.value.cannot.be.null}")
         @Positive(message = "{validation.required.positive.integer}")
-        Long cemeteryId) {
+        Long cemeteryId
+) {
 }

@@ -29,6 +29,7 @@ public record GraveRequestDTO(
         @Schema(description = "ID da quadra em que a sepultura está vinculada.", example = "1")
         @NotNull(message = "{validation.assigned.value.cannot.be.null}")
         @Positive(message = "{validation.required.positive.integer}")
-        Long blockId) {
+        Long blockId
+) {
 
 }

@@ -3,6 +3,7 @@ package br.com.sgc.api.person.entity;
 import java.time.LocalDate;
 
 import br.com.sgc.api.common.enums.DeceasedType;
+import br.com.sgc.api.common.enums.genderType;
 import br.com.sgc.api.person.entity.embeddable.DocumentInfo;
 
 import jakarta.persistence.AttributeOverride;
@@ -48,8 +49,9 @@ public class DeceasedEntity {
     @Column(name = "dec_bith_date", nullable = false)
     private LocalDate birthDate;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "dec_gender", nullable = false)
-    private String gender;
+    private genderType gender;
 
     @Embedded
     @AttributeOverrides({
