@@ -1,17 +1,23 @@
 package br.com.sgc.api.person.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.sgc.api.person.entity.embeddable.AddressInfo;
 import br.com.sgc.api.person.entity.embeddable.ContatctInfo;
 import br.com.sgc.api.person.entity.embeddable.DocumentInfo;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -63,4 +69,6 @@ public class DeclarantEntity {
     @Column(name = "decla_occupation", nullable = false)
     private String occupation;
 
+    @OneToMany(mappedBy = "declarant", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DeceasedEntity> deceased = new ArrayList<>();
 }
