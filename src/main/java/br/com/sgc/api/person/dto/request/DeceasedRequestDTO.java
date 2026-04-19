@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import br.com.sgc.api.common.enums.DeceasedType;
 import br.com.sgc.api.common.enums.genderType;
+import br.com.sgc.api.person.dto.request.support.DocumentInfoRequestDTO;
 import br.com.sgc.api.person.entity.DeclarantEntity;
 
 import jakarta.validation.Valid;
@@ -33,6 +34,7 @@ public record DeceasedRequestDTO(
     @NotNull(message = "{validation.assigned.value.cannot.be.null}")
     genderType gender,
 
+    @Schema(description = "Documentos de identificação do falecido.")
     @NotNull(message = "{validation.deceased.document.required}")
     @Valid
     DocumentInfoRequestDTO document,
