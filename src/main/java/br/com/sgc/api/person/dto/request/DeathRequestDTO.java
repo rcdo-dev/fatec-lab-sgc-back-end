@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Positive;
 
 @Schema(title = "Death Request", description = "DTO de entrada para cadastro do óbito.")
 public record DeathRequestDTO(
@@ -40,6 +41,7 @@ public record DeathRequestDTO(
     String observationsString,
 
     @Schema(description = "Indica a qual falecido este óbito pertence.", example = "1")
+    @Positive(message = "{validation.required.positive.integer}")
     DeceasedEntity deceasedId
 ) {
 
