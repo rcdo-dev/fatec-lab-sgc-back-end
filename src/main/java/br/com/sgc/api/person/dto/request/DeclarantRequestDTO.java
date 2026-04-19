@@ -29,7 +29,7 @@ public record DeclarantRequestDTO(
     @Schema(description = "Endereço do declarante.")
     @NotNull(message = "{validation.deceased.document.required}")
     @Valid
-    AddressInfoRequestDTO adress,
+    AddressInfoRequestDTO address,
 
     @Schema(description = "Profissão do declarante.")
     @NotBlank(message = "{validation.text.cannot.be.blank.or.null}")
