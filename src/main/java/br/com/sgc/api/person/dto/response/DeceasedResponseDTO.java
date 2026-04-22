@@ -8,7 +8,6 @@ import br.com.sgc.api.common.enums.DeceasedType;
 import br.com.sgc.api.common.enums.genderType;
 
 import br.com.sgc.api.person.dto.response.support.DocumentInfoResponseDTO;
-import br.com.sgc.api.person.entity.DeclarantEntity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -52,7 +51,7 @@ public record DeceasedResponseDTO(
     String observations,
 
     @Schema(description = "ID do declarante.", example = "1")
-    DeclarantEntity declarantId
+    Long declarantId
 ) {
 
 }

@@ -5,8 +5,6 @@ import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import br.com.sgc.api.person.entity.DeceasedEntity;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(title = "Death Response", description = "DTO de resposta para o óbito.")
@@ -37,7 +35,7 @@ public record DeathResponseDTO(
     String observations,
 
     @Schema(description = "Indica a qual falecido este óbito pertence.", example = "1")
-    DeceasedEntity deceasedId
+    Long deceasedId
 ) {
 
 }
