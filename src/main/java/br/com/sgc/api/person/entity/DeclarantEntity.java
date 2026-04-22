@@ -53,7 +53,7 @@ public class DeclarantEntity {
         @AttributeOverride(name = "phone", column = @Column(name = "decla_phone", nullable = false)),
         @AttributeOverride(name = "email", column = @Column(name = "decla_email", nullable = false))
     })
-    private ContatctInfo contatct;
+    private ContatctInfo contact;
 
     @Embedded
     @AttributeOverrides({
