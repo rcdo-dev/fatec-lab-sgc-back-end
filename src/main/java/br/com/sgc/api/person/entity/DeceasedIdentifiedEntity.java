@@ -2,7 +2,6 @@ package br.com.sgc.api.person.entity;
 
 import java.time.LocalDate;
 
-import br.com.sgc.api.common.enums.DeceasedType;
 import br.com.sgc.api.common.enums.GenderIdentityType;
 import br.com.sgc.api.common.enums.GenderType;
 import br.com.sgc.api.person.entity.embeddable.DocumentInfo;

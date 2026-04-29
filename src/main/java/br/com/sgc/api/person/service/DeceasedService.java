@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.sgc.api.common.exception.classes.BusinessException;
 import br.com.sgc.api.common.exception.classes.ResourceNotFoundException;
-import br.com.sgc.api.person.dto.request.DeceasedRequestDTO;
-import br.com.sgc.api.person.dto.response.DeceasedResponseDTO;
+import br.com.sgc.api.person.dto.request.DeceasedIdentifiedRequestDTO;
+import br.com.sgc.api.person.dto.response.DeceasedIdentifiedResponseDTO;
 import br.com.sgc.api.person.entity.DeceasedIdentifiedEntity;
 import br.com.sgc.api.person.entity.embeddable.DocumentInfo;
 import br.com.sgc.api.person.mapper.DeceasedIdentifiedMapper;
@@ -23,22 +23,22 @@ public class DeceasedService {
     private final DeceasedIdentifiedMapper mapper;
     private final MessageSource messageSource;
 
-    public DeceasedResponseDTO save(DeceasedRequestDTO request) {
+    public DeceasedIdentifiedResponseDTO save(DeceasedIdentifiedRequestDTO request) {
         var deceased = mapper.toEntity(request);
         var deceasedSaved = deceasedRepository.save(deceased);
         return mapper.toResponse(deceasedSaved);
     }
 
-    public List<DeceasedResponseDTO> findAll() {
+    public List<DeceasedIdentifiedResponseDTO> findAll() {
         return deceasedRepository.findAll().stream().map(mapper::toResponse).toList();
     }
 
-    public DeceasedResponseDTO findById(Long id) {
+    public DeceasedIdentifiedResponseDTO findById(Long id) {
         return mapper.toResponse(findDeceasedById(id));
     }
 
     @Transactional
-    public DeceasedResponseDTO update(Long id, DeceasedRequestDTO request) {
+    public DeceasedIdentifiedResponseDTO update(Long id, DeceasedIdentifiedRequestDTO request) {
         var deceased = findDeceasedById(id);
         var documentInfo = new DocumentInfo(request.document().rg(), request.document().cpf());
 

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import br.com.sgc.api.common.enums.DeceasedType;
+import br.com.sgc.api.common.enums.GenderIdentityType;
 import br.com.sgc.api.common.enums.GenderType;
 
 import br.com.sgc.api.person.dto.response.support.DocumentInfoResponseDTO;
@@ -13,21 +13,21 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(title = "Deceased Response", description = "DTO de resposta para o falecido.")
 @JsonPropertyOrder({"id", "name", "deceasedType", "birthDate", "gender", "document", "occupation", "fathersName", "mothersName", "naturalness", "cityResident", "observations", "declarantId"})
-public record DeceasedResponseDTO(
+public record DeceasedIdentifiedResponseDTO(
     @Schema(description = "Identificador único do falecido.", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     Long id,
 
     @Schema(description = "Nome do falecido.", example = "Alexandre Magno Abrão.")
     String name,
 
-    @Schema(description = "Tipo do falecido (HUMAN / PET).", example = "HUMAN")
-    DeceasedType deceasedType,
-
     @Schema(description = "Data de nascimento.", example = "1970-04-09")
     LocalDate birthDate,
 
     @Schema(description = "Gênero (MAN / WOMAN).", example = "MAN")
     GenderType gender,
+
+    @Schema(description = "Gênero (CISGENDER / TRANSGENDER / NON_BINARY).", example = "TRANSGENDER")
+    GenderIdentityType genderIdentity,
 
     @Schema(description = "Documentos de identificação do falecido.")
     DocumentInfoResponseDTO document,

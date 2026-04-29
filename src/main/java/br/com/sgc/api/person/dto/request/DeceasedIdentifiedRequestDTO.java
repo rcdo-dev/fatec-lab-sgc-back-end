@@ -2,7 +2,7 @@ package br.com.sgc.api.person.dto.request;
 
 import java.time.LocalDate;
 
-import br.com.sgc.api.common.enums.DeceasedType;
+import br.com.sgc.api.common.enums.GenderIdentityType;
 import br.com.sgc.api.common.enums.GenderType;
 import br.com.sgc.api.person.dto.request.support.DocumentInfoRequestDTO;
 import br.com.sgc.api.person.entity.DeclarantEntity;
@@ -16,23 +16,23 @@ import jakarta.validation.constraints.Positive;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(title = "Deceased Request", description = "DTO de entrada para persistência de dados do falecido.")
-public record DeceasedRequestDTO(
+public record DeceasedIdentifiedRequestDTO(
     @Schema(description = "Nome do falecido.", example = "Alexandre Magno Abrão.")
     @NotBlank(message = "{validation.text.cannot.be.blank.or.null}")
     String name,
-
-    @Schema(description = "Tipo do falecido (HUMAN / PET).", example = "HUMAN")
-    @NotNull(message = "{validation.assigned.value.cannot.be.null}")
-    DeceasedType deceasedType,
 
     @Schema(description = "Data de nascimento.", example = "1970-04-09")
     @NotNull(message = "{validation.assigned.value.cannot.be.null}")
     @PastOrPresent(message = "{validation.date.cannot.be.in.the.future}")
     LocalDate birthDate,
 
-    @Schema(description = "Gênero (MAN / WOMAN).", example = "MAN")
+    @Schema(description = "Gênero (MALE / FEMALE).", example = "MALE")
     @NotNull(message = "{validation.assigned.value.cannot.be.null}")
     GenderType gender,
+
+    @Schema(description = "Gênero (CISGENDER / TRANSGENDER / NON_BINARY).", example = "TRANSGENDER")
+    @NotNull(message = "{validation.assigned.value.cannot.be.null}")
+    GenderIdentityType genderIdentity,
 
     @Schema(description = "Documentos de identificação do falecido.")
     @NotNull(message = "{validation.deceased.document.required}")
