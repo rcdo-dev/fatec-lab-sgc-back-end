@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.sgc.api.common.exception.classes.BusinessException;
 import br.com.sgc.api.common.exception.classes.ResourceNotFoundException;
 import br.com.sgc.api.person.dto.request.DeceasedRequestDTO;
 import br.com.sgc.api.person.dto.response.DeceasedResponseDTO;
 import br.com.sgc.api.person.entity.DeceasedEntity;
+import br.com.sgc.api.person.entity.embeddable.DocumentInfo;
 import br.com.sgc.api.person.mapper.DeceasedMapper;
 import br.com.sgc.api.person.repositories.DeceasedRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,20 +34,38 @@ public class DeceasedService {
     }
 
     public DeceasedResponseDTO findById(Long id) {
-        return mapper.toResponse(findDeceasedByid(id));
+        return mapper.toResponse(findDeceasedById(id));
     }
 
-    public DeceasedResponseDTO update(Long id, DeceasedRequestDTO request){
-        var deceased = findDeceasedByid(id);
+    @Transactional
+    public DeceasedResponseDTO update(Long id, DeceasedRequestDTO request) {
+        var deceased = findDeceasedById(id);
+        var documentInfo = new DocumentInfo(request.document().rg(), request.document().cpf());
 
         deceased.setName(request.name());
+        deceased.setDeceasedType(request.deceasedType());
+        deceased.setBirthDate(request.birthDate());
+        deceased.setGender(request.gender());
+        deceased.setDocument(documentInfo);
+        deceased.setOccupation(request.occupation());
+        deceased.setFathersName(request.fathersName());
+        deceased.setMothersName(request.mothersName());
+        deceased.setNaturalness(request.naturalness());
+        deceased.setCityResident(request.cityResident());
+        deceased.setObservations(request.observations());
 
-        deceasedRepository.save(deceased);
-        
         return mapper.toResponse(deceased);
     }
 
-    private DeceasedEntity findDeceasedByid(Long id) {
+    public void archive(Long id) {
+        // Não há delete para falecido, pode ser arquivado.
+    }
+
+    public void history(Long id) {
+        // Não há delete para falecido, pode ter histórico.
+    }
+
+    private DeceasedEntity findDeceasedById(Long id) {
         if (id == null) {
             throw new BusinessException("deceased.id.required");
         }
