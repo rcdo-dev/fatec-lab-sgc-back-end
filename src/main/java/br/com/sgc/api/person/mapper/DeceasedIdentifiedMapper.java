@@ -5,15 +5,15 @@ import org.mapstruct.Mapping;
 
 import br.com.sgc.api.person.dto.request.DeceasedRequestDTO;
 import br.com.sgc.api.person.dto.response.DeceasedResponseDTO;
-import br.com.sgc.api.person.entity.DeceasedEntity;
+import br.com.sgc.api.person.entity.DeceasedIdentifiedEntity;
 
 @Mapper(componentModel = "spring")
-public interface DeceasedMapper {
+public interface DeceasedIdentifiedMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "declarant", ignore = true)
-    DeceasedEntity toEntity(DeceasedRequestDTO dto);
+    DeceasedIdentifiedEntity toEntity(DeceasedRequestDTO dto);
 
     @Mapping(target = "declarantId", source = "declarant.id")
-    DeceasedResponseDTO toResponse(DeceasedEntity entity);
+    DeceasedResponseDTO toResponse(DeceasedIdentifiedEntity entity);
 }

@@ -3,7 +3,7 @@ package br.com.sgc.api.person.dto.request;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import br.com.sgc.api.person.entity.DeceasedEntity;
+import br.com.sgc.api.person.entity.DeceasedIdentifiedEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -42,7 +42,7 @@ public record DeathRequestDTO(
 
     @Schema(description = "Indica a qual falecido este óbito pertence.", example = "1")
     @Positive(message = "{validation.required.positive.integer}")
-    DeceasedEntity deceasedId
+    DeceasedIdentifiedEntity deceasedId
 ) {
 
 }

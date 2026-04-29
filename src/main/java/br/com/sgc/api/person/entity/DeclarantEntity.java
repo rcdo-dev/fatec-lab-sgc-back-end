@@ -70,5 +70,5 @@ public class DeclarantEntity {
     private String occupation;
 
     @OneToMany(mappedBy = "declarant", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DeceasedEntity> deceased = new ArrayList<>();
+    private List<DeceasedIdentifiedEntity> deceased = new ArrayList<>();
 }

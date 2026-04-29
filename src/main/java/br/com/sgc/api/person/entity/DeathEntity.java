@@ -54,6 +54,6 @@ public class DeathEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_dea_dec_id", nullable = false, unique = true)
-    private DeceasedEntity deceased;
+    private DeceasedIdentifiedEntity deceased;
 
 }

@@ -3,7 +3,7 @@ package br.com.sgc.api.person.dto.request;
 import java.time.LocalDate;
 
 import br.com.sgc.api.common.enums.DeceasedType;
-import br.com.sgc.api.common.enums.genderType;
+import br.com.sgc.api.common.enums.GenderType;
 import br.com.sgc.api.person.dto.request.support.DocumentInfoRequestDTO;
 import br.com.sgc.api.person.entity.DeclarantEntity;
 
@@ -32,7 +32,7 @@ public record DeceasedRequestDTO(
 
     @Schema(description = "Gênero (MAN / WOMAN).", example = "MAN")
     @NotNull(message = "{validation.assigned.value.cannot.be.null}")
-    genderType gender,
+    GenderType gender,
 
     @Schema(description = "Documentos de identificação do falecido.")
     @NotNull(message = "{validation.deceased.document.required}")

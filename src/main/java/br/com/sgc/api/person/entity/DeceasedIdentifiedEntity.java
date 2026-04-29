@@ -3,7 +3,8 @@ package br.com.sgc.api.person.entity;
 import java.time.LocalDate;
 
 import br.com.sgc.api.common.enums.DeceasedType;
-import br.com.sgc.api.common.enums.genderType;
+import br.com.sgc.api.common.enums.GenderIdentityType;
+import br.com.sgc.api.common.enums.GenderType;
 import br.com.sgc.api.person.entity.embeddable.DocumentInfo;
 
 import jakarta.persistence.AttributeOverride;
@@ -32,7 +33,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeceasedEntity {
+public class DeceasedIdentifiedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,16 +43,16 @@ public class DeceasedEntity {
     @Column(name = "dec_name", nullable = false)
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "dec_type", nullable = false)
-    private DeceasedType deceasedType;
-
     @Column(name = "dec_bith_date", nullable = false)
     private LocalDate birthDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "dec_gender", nullable = false)
-    private genderType gender;
+    private GenderType gender;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "dec_gender_identity", nullable = false)
+    private GenderIdentityType genderIdentity;
 
     @Embedded
     @AttributeOverrides({

@@ -10,9 +10,9 @@ import br.com.sgc.api.common.exception.classes.BusinessException;
 import br.com.sgc.api.common.exception.classes.ResourceNotFoundException;
 import br.com.sgc.api.person.dto.request.DeceasedRequestDTO;
 import br.com.sgc.api.person.dto.response.DeceasedResponseDTO;
-import br.com.sgc.api.person.entity.DeceasedEntity;
+import br.com.sgc.api.person.entity.DeceasedIdentifiedEntity;
 import br.com.sgc.api.person.entity.embeddable.DocumentInfo;
-import br.com.sgc.api.person.mapper.DeceasedMapper;
+import br.com.sgc.api.person.mapper.DeceasedIdentifiedMapper;
 import br.com.sgc.api.person.repositories.DeceasedRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DeceasedService {
     private final DeceasedRepository deceasedRepository;
-    private final DeceasedMapper mapper;
+    private final DeceasedIdentifiedMapper mapper;
     private final MessageSource messageSource;
 
     public DeceasedResponseDTO save(DeceasedRequestDTO request) {
@@ -43,7 +43,6 @@ public class DeceasedService {
         var documentInfo = new DocumentInfo(request.document().rg(), request.document().cpf());
 
         deceased.setName(request.name());
-        deceased.setDeceasedType(request.deceasedType());
         deceased.setBirthDate(request.birthDate());
         deceased.setGender(request.gender());
         deceased.setDocument(documentInfo);
@@ -65,7 +64,7 @@ public class DeceasedService {
         // Não há delete para falecido, pode ter histórico.
     }
 
-    private DeceasedEntity findDeceasedById(Long id) {
+    private DeceasedIdentifiedEntity findDeceasedById(Long id) {
         if (id == null) {
             throw new BusinessException("deceased.id.required");
         }

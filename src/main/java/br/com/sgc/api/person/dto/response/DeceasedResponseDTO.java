@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import br.com.sgc.api.common.enums.DeceasedType;
-import br.com.sgc.api.common.enums.genderType;
+import br.com.sgc.api.common.enums.GenderType;
 
 import br.com.sgc.api.person.dto.response.support.DocumentInfoResponseDTO;
 
@@ -27,7 +27,7 @@ public record DeceasedResponseDTO(
     LocalDate birthDate,
 
     @Schema(description = "Gênero (MAN / WOMAN).", example = "MAN")
-    genderType gender,
+    GenderType gender,
 
     @Schema(description = "Documentos de identificação do falecido.")
     DocumentInfoResponseDTO document,
