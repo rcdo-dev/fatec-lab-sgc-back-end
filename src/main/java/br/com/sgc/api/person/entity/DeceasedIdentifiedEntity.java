@@ -36,49 +36,49 @@ public class DeceasedIdentifiedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "dec_id", nullable = false)
+    @Column(name = "deci_id", nullable = false)
     private Long id;
 
-    @Column(name = "dec_name", nullable = false)
+    @Column(name = "deci_name", nullable = false)
     private String name;
 
-    @Column(name = "dec_bith_date", nullable = false)
+    @Column(name = "deci_bith_date", nullable = false)
     private LocalDate birthDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "dec_gender", nullable = false)
+    @Column(name = "deci_gender", nullable = false)
     private GenderType gender;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "dec_gender_identity", nullable = false)
+    @Column(name = "deci_gender_identity", nullable = false)
     private GenderIdentityType genderIdentity;
 
     @Embedded
     @AttributeOverrides({
-        @AttributeOverride(name = "rg", column = @Column(name = "dec_rg", nullable = false)),
-        @AttributeOverride(name = "cpf", column = @Column(name = "dec_cpf", nullable = false))
+        @AttributeOverride(name = "rg", column = @Column(name = "deci_rg", nullable = false)),
+        @AttributeOverride(name = "cpf", column = @Column(name = "deci_cpf", nullable = false))
     })
     private DocumentInfo document;
 
-    @Column(name = "dec_ocuppation", nullable = false)
+    @Column(name = "deci_ocuppation", nullable = false)
     private String occupation;
 
-    @Column(name = "dec_fathers_name", nullable = false)
+    @Column(name = "deci_fathers_name", nullable = false)
     private String fathersName;
 
-    @Column(name = "dec_mothers_name", nullable = false)
+    @Column(name = "deci_mothers_name", nullable = false)
     private String mothersName;
 
-    @Column(name = "dec_naturalness", nullable = false)
+    @Column(name = "deci_naturalness", nullable = false)
     private String naturalness;
 
-    @Column(name = "dec_city_resident", nullable = false)
+    @Column(name = "deci_city_resident", nullable = false)
     private boolean cityResident;
 
-    @Column(name = "dec_observations")
+    @Column(name = "deci_observations")
     private String observations;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_dec_decla_id", nullable = false)
+    @JoinColumn(name = "fk_deci_decla_id", nullable = false)
     private DeclarantEntity declarant;
 }
