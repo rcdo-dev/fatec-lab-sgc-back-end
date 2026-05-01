@@ -40,22 +40,22 @@ public class DeceasedUnidentifiedEntity {
     private GenderType gender;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "skin_color", nullable = false)
+    @Column(name = "decu_skin_color", nullable = false)
     private SkinColor skinColor;
 
-    @Column(name = "stature", nullable = false)
+    @Column(name = "decu_stature", nullable = false)
     private float stature;
 
-    @Column(name = "hair_color", nullable = false)
+    @Column(name = "decu_hair_color", nullable = false)
     private String hairColor;
 
-    @Column(name = "hair_type", nullable = false)
+    @Column(name = "decu_hair_type", nullable = false)
     private HairType hairType;
 
-    @Column(name = "eye_color", nullable = false)
+    @Column(name = "decu_eye_color", nullable = false)
     private String eyeColor;
 
-    @Column(name = "eye_type", nullable = false)
+    @Column(name = "decu_eye_type", nullable = false)
     private EyeType eyeType;
 
 }
