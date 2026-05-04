@@ -53,9 +53,15 @@ public class DeathEntity {
     private String observations;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_dea_dec_id", nullable = false, unique = true)
+    @JoinColumn(name = "fk_dea_deci_id", nullable = false, unique = true)
     private DeceasedIdentifiedEntity deceasedIdentified;
 
-    // linkar pet e desconhecido.
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_dea_decu_id", nullable = false, unique = true)
+    private DeceasedUnidentifiedEntity deceasedUnidentified;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_dea_decp_id", nullable = false, unique = true)
+    private DeceasedPetEntity deceasedPet;
 
 }
