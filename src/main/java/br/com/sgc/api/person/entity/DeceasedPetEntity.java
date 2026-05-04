@@ -39,7 +39,7 @@ public class DeceasedPetEntity {
     private String species;
 
     @Column(name = "decp_breed", nullable = false)
-    private String Breed;
+    private String breed;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "decp_sex", nullable = false)

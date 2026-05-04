@@ -1,5 +1,7 @@
 package br.com.sgc.api.person.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import br.com.sgc.api.common.enums.EyeType;
 import br.com.sgc.api.common.enums.GenderType;
 import br.com.sgc.api.common.enums.HairType;
@@ -8,6 +10,7 @@ import br.com.sgc.api.common.enums.SkinColor;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(title = "Deceased Unidentified Response", description = "DTO de resposta para falecido não identificado.")
+@JsonPropertyOrder({"id", "estimatedAge", "gender", "skinColor", "stature", "hairColor", "hairType", "eyeColor", "eyeType", "declarantId"})
 public record DeceasedUnidentifiedResponseDTO(
     @Schema(description = "Identificador único do falecido.", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     Long id,

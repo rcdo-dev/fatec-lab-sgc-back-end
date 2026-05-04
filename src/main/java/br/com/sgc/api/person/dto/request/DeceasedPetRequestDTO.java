@@ -20,7 +20,7 @@ public record DeceasedPetRequestDTO(
 
     @Schema(description = "Raça do animal.", example = "Pinscher")
     @NotBlank(message = "{validation.text.cannot.be.blank.or.null}")
-    String Breed,
+    String breed,
 
     @Schema(description = "Gênero (MALE / FEMALE).", example = "FEMALE")
     @NotNull(message = "{validation.assigned.value.cannot.be.null}")
