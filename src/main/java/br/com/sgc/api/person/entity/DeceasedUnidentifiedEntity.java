@@ -36,7 +36,7 @@ public class DeceasedUnidentifiedEntity {
     private Long id;
 
     @Column(name = "decu_estimated_age", nullable = false)
-    private String estimatedAge;
+    private int estimatedAge;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "decu_gender", nullable = false)

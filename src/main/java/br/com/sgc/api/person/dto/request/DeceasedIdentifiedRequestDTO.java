@@ -15,7 +15,7 @@ import jakarta.validation.constraints.Positive;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(title = "Deceased Request", description = "DTO de entrada para persistência de dados do falecido.")
+@Schema(title = "Deceased Identified Request", description = "DTO de entrada para persistência de dados do falecido identificado.")
 public record DeceasedIdentifiedRequestDTO(
     @Schema(description = "Nome do falecido.", example = "Alexandre Magno Abrão.")
     @NotBlank(message = "{validation.text.cannot.be.blank.or.null}")
@@ -64,7 +64,7 @@ public record DeceasedIdentifiedRequestDTO(
 
     @Schema(description = "ID do declarante.", example = "1")
     @NotNull(message = "{validation.assigned.value.cannot.be.null}")
-    @Positive(message = "{validation.required.positive.integer}")
+    @Positive(message = "{validation.required.positive}")
     DeclarantEntity declarantId
 ) {
 

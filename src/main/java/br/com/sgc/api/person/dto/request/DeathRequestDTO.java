@@ -41,7 +41,7 @@ public record DeathRequestDTO(
     String observations,
 
     @Schema(description = "Indica a qual falecido este óbito pertence.", example = "1")
-    @Positive(message = "{validation.required.positive.integer}")
+    @Positive(message = "{validation.required.positive}")
     DeceasedIdentifiedEntity deceasedId
 ) {
 
