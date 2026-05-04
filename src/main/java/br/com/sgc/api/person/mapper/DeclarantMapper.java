@@ -11,7 +11,9 @@ import br.com.sgc.api.person.entity.DeclarantEntity;
 public interface DeclarantMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "deceased", ignore = true)
+    @Mapping(target = "deceasedIdentified", ignore = true)
+    @Mapping(target = "deceasedUnidentified", ignore = true)
+    @Mapping(target = "deceasedPet", ignore = true)
     DeclarantEntity toEntity(DeclarantRequestDTO dto);
 
     DeclarantResponseDTO toResponse(DeclarantEntity entity);
