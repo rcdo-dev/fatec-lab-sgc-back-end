@@ -4,7 +4,7 @@ import br.com.sgc.api.common.enums.EyeType;
 import br.com.sgc.api.common.enums.GenderType;
 import br.com.sgc.api.common.enums.HairType;
 import br.com.sgc.api.common.enums.SkinColor;
-
+import br.com.sgc.api.person.entity.DeclarantEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -45,7 +45,12 @@ public record DeceasedUnidentifiedRequestDTO(
 
     @Schema(description = "Tipo dos olhos (ALMOND_SHAPED / ROUND / DROOPY / DEEP_SET / PROTRUDING / ASIAN / ASYMMETRICAL).", example = "ROUND")
     @NotNull(message = "{validation.assigned.value.cannot.be.null}")
-    EyeType eyeType
+    EyeType eyeType,
+
+    @Schema(description = "ID do declarante.", example = "1")
+    @NotNull(message = "{validation.assigned.value.cannot.be.null}")
+    @Positive(message = "{validation.required.positive}")
+    DeclarantEntity declarantId
 ) {
 
 }
