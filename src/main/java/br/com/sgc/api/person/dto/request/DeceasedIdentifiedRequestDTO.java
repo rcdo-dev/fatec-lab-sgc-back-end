@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import br.com.sgc.api.common.enums.GenderIdentityType;
 import br.com.sgc.api.common.enums.GenderType;
 import br.com.sgc.api.person.dto.request.support.DocumentInfoRequestDTO;
-import br.com.sgc.api.person.entity.DeclarantEntity;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -65,7 +64,7 @@ public record DeceasedIdentifiedRequestDTO(
     @Schema(description = "ID do declarante.", example = "1")
     @NotNull(message = "{validation.assigned.value.cannot.be.null}")
     @Positive(message = "{validation.required.positive}")
-    DeclarantEntity declarantId
+    Long declarantId
 ) {
 
 }

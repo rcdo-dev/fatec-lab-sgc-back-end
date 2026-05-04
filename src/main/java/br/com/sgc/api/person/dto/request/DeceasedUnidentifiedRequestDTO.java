@@ -4,11 +4,12 @@ import br.com.sgc.api.common.enums.EyeType;
 import br.com.sgc.api.common.enums.GenderType;
 import br.com.sgc.api.common.enums.HairType;
 import br.com.sgc.api.common.enums.SkinColor;
-import br.com.sgc.api.person.entity.DeclarantEntity;
-import io.swagger.v3.oas.annotations.media.Schema;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(title = "Deceased Unidentified Request", description = "DTO de entrada o falecido não identificado.")
 public record DeceasedUnidentifiedRequestDTO(
@@ -50,7 +51,7 @@ public record DeceasedUnidentifiedRequestDTO(
     @Schema(description = "ID do declarante.", example = "1")
     @NotNull(message = "{validation.assigned.value.cannot.be.null}")
     @Positive(message = "{validation.required.positive}")
-    DeclarantEntity declarantId
+    Long declarantId
 ) {
 
 }

@@ -1,5 +1,43 @@
 package br.com.sgc.api.person.dto.response;
 
-public record DeceasedUnidentifiedResponseDTO() {
+import br.com.sgc.api.common.enums.EyeType;
+import br.com.sgc.api.common.enums.GenderType;
+import br.com.sgc.api.common.enums.HairType;
+import br.com.sgc.api.common.enums.SkinColor;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(title = "Deceased Unidentified Response", description = "DTO de resposta para falecido não identificado.")
+public record DeceasedUnidentifiedResponseDTO(
+    @Schema(description = "Identificador único do falecido.", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
+    Long id,
+    
+    @Schema(description = "Data estimada.", example = "97")
+    int estimatedAge,
+
+    @Schema(description = "Gênero (MALE / FEMALE).", example = "MALE")
+    GenderType gender,
+
+    @Schema(description = "Cor da pele (WHITE / BLACK / BROWN / YELLOW / INDIGENOUS).", example = "WHITE")
+    SkinColor skinColor,
+
+    @Schema(description = "Altura medida em metros.", example = "1.84")
+    float stature,
+
+    @Schema(description = "Cor do cabelo.", example = "Branco")
+    String hairColor,
+
+    @Schema(description = "Tipo do cabelo (STRAIGHT / WAVY / CURLY / KINKY).", example = "STRAIGHT")
+    HairType hairType,
+    
+    @Schema(description = "Cor dos olhos.", example = "Verdes")
+    String eyeColor,
+
+    @Schema(description = "Tipo dos olhos (ALMOND_SHAPED / ROUND / DROOPY / DEEP_SET / PROTRUDING / ASIAN / ASYMMETRICAL).", example = "ROUND")
+    EyeType eyeType,
+
+    @Schema(description = "ID do declarante.", example = "1")
+    Long declarantId
+) {
 
 }

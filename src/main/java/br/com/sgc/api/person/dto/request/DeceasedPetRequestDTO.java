@@ -33,7 +33,12 @@ public record DeceasedPetRequestDTO(
     @Schema(description = "Idade estimada do animal.", example = "11")
     @NotNull(message = "{validation.assigned.value.cannot.be.null}")
     @Positive(message = "{validation.required.positive}")
-    int estimatedAge
+    int estimatedAge,
+
+    @Schema(description = "ID do declarante.", example = "1")
+    @NotNull(message = "{validation.assigned.value.cannot.be.null}")
+    @Positive(message = "{validation.required.positive}")
+    Long declarantId
 ) {
 
 }

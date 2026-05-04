@@ -11,7 +11,7 @@ import br.com.sgc.api.person.dto.response.support.DocumentInfoResponseDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(title = "Deceased Response", description = "DTO de resposta para o falecido.")
+@Schema(title = "Deceased Identified Response", description = "DTO de resposta para o falecido identificado.")
 @JsonPropertyOrder({"id", "name", "deceasedType", "birthDate", "gender", "document", "occupation", "fathersName", "mothersName", "naturalness", "cityResident", "observations", "declarantId"})
 public record DeceasedIdentifiedResponseDTO(
     @Schema(description = "Identificador único do falecido.", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
