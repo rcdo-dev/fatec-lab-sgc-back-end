@@ -31,7 +31,7 @@ public record DeclarantRequestDTO(
     @Valid
     AddressInfoRequestDTO address,
 
-    @Schema(description = "Profissão do declarante.")
+    @Schema(description = "Profissão do declarante.", example = "Motorista")
     @NotBlank(message = "{validation.text.cannot.be.blank.or.null}")
     String occupation
 ) {

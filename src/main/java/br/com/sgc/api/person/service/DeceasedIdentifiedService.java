@@ -14,27 +14,33 @@ import br.com.sgc.api.person.entity.DeceasedIdentifiedEntity;
 import br.com.sgc.api.person.entity.embeddable.DocumentInfo;
 import br.com.sgc.api.person.mapper.DeceasedIdentifiedMapper;
 import br.com.sgc.api.person.repositories.DeceasedIdentifiedRepository;
-
+import br.com.sgc.api.person.repositories.DeclarantRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class DeceasedIdentifiedService {
     private final DeceasedIdentifiedRepository deceasedRepository;
+    private final DeclarantRepository declarantRepository;
     private final DeceasedIdentifiedMapper mapper;
     private final MessageSource messageSource;
 
     public DeceasedIdentifiedResponseDTO save(DeceasedIdentifiedRequestDTO request) {
         var deceased = mapper.toEntity(request);
+
+        var declarant = declarantRepository.findById(request.declarantId())
+                .orElseThrow(() -> new ResourceNotFoundException("declarante não encontrado!")); // Message properties.
+
+        // Travar duplicidade.
+
+        deceased.setDeclarant(declarant);
+
         var deceasedSaved = deceasedRepository.save(deceased);
         return mapper.toResponse(deceasedSaved);
     }
 
     public List<DeceasedIdentifiedResponseDTO> findAll() {
-        return deceasedRepository.findAll()
-            .stream()
-            .map(mapper::toResponse)
-            .toList();
+        return deceasedRepository.findAll().stream().map(mapper::toResponse).toList();
     }
 
     public DeceasedIdentifiedResponseDTO findById(Long id) {
