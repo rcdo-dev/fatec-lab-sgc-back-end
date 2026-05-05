@@ -13,13 +13,13 @@ import br.com.sgc.api.person.dto.response.DeceasedIdentifiedResponseDTO;
 import br.com.sgc.api.person.entity.DeceasedIdentifiedEntity;
 import br.com.sgc.api.person.entity.embeddable.DocumentInfo;
 import br.com.sgc.api.person.mapper.DeceasedIdentifiedMapper;
-import br.com.sgc.api.person.repositories.DeceasedRepository;
+import br.com.sgc.api.person.repositories.DeceasedIdentifiedRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class DeceasedService {
-    private final DeceasedRepository deceasedRepository;
+    private final DeceasedIdentifiedRepository deceasedRepository;
     private final DeceasedIdentifiedMapper mapper;
     private final MessageSource messageSource;
 
