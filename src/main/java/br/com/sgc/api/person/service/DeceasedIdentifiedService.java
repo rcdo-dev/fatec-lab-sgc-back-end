@@ -14,11 +14,12 @@ import br.com.sgc.api.person.entity.DeceasedIdentifiedEntity;
 import br.com.sgc.api.person.entity.embeddable.DocumentInfo;
 import br.com.sgc.api.person.mapper.DeceasedIdentifiedMapper;
 import br.com.sgc.api.person.repositories.DeceasedIdentifiedRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class DeceasedService {
+public class DeceasedIdentifiedService {
     private final DeceasedIdentifiedRepository deceasedRepository;
     private final DeceasedIdentifiedMapper mapper;
     private final MessageSource messageSource;
@@ -30,7 +31,10 @@ public class DeceasedService {
     }
 
     public List<DeceasedIdentifiedResponseDTO> findAll() {
-        return deceasedRepository.findAll().stream().map(mapper::toResponse).toList();
+        return deceasedRepository.findAll()
+            .stream()
+            .map(mapper::toResponse)
+            .toList();
     }
 
     public DeceasedIdentifiedResponseDTO findById(Long id) {

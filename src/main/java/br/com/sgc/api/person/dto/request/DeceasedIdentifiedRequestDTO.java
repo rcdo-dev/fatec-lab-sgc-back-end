@@ -29,7 +29,7 @@ public record DeceasedIdentifiedRequestDTO(
     @NotNull(message = "{validation.assigned.value.cannot.be.null}")
     GenderType gender,
 
-    @Schema(description = "Gênero (CISGENDER / TRANSGENDER / NON_BINARY).", example = "TRANSGENDER")
+    @Schema(description = "Gênero (CISGENDER / TRANSGENDER / NON_BINARY).", example = "CISGENDER")
     @NotNull(message = "{validation.assigned.value.cannot.be.null}")
     GenderIdentityType genderIdentity,
 
