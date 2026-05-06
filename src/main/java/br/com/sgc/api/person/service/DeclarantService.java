@@ -27,6 +27,12 @@ public class DeclarantService {
 
     public DeclarantResponseDTO save(DeclarantRequestDTO request) {
         var declarant = mapper.toEntity(request);
+
+        if(declarantRepository.existsByDocument_RgIgnoreCase(request.document().rg()) ||
+            declarantRepository.existsByDocument_CpfIgnoreCase(request.document().cpf())){
+            throw new BusinessException("declarant.already.exists");
+        }
+
         var declarantSaved = declarantRepository.save(declarant);
         return mapper.toResponse(declarantSaved);
     }
@@ -42,6 +48,19 @@ public class DeclarantService {
     public DeclarantResponseDTO update(Long id, DeclarantRequestDTO request) {
         var declarant = findByDeclarantId(id);
 
+        if (declarantRepository.existsByDocument_RgIgnoreCaseAndIdNot(request.document().rg(), id)){
+            throw new BusinessException("declarant.rg.already.exists");
+        }
+
+        if (declarantRepository.existsByDocument_CpfIgnoreCaseAndIdNot(request.document().cpf(), id)){
+            throw new BusinessException("declarant.cpf.already.exists");
+        }
+
+        updateData(declarant, request);
+        return mapper.toResponse(declarantRepository.save(declarant));
+    }
+
+    private void updateData(DeclarantEntity declarant, DeclarantRequestDTO request){
         var documentInfo = new DocumentInfo(
                                 request.document().rg(),
                                 request.document().cpf()
@@ -63,8 +82,6 @@ public class DeclarantService {
         declarant.setContact(contactInfo);
         declarant.setAddress(addressInfo);
         declarant.setOccupation(request.occupation());
-
-        return mapper.toResponse(declarantRepository.save(declarant));
     }
 
     public void delete (Long id){
