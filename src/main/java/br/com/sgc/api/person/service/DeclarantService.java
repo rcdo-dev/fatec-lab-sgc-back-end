@@ -1,11 +1,14 @@
 package br.com.sgc.api.person.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import br.com.sgc.api.common.exception.classes.BusinessException;
+import br.com.sgc.api.common.exception.classes.ConflictException;
 import br.com.sgc.api.common.exception.classes.ResourceNotFoundException;
 import br.com.sgc.api.person.dto.request.DeclarantRequestDTO;
 import br.com.sgc.api.person.dto.response.DeclarantResponseDTO;
@@ -30,7 +33,7 @@ public class DeclarantService {
 
         if(declarantRepository.existsByDocument_RgIgnoreCase(request.document().rg()) ||
             declarantRepository.existsByDocument_CpfIgnoreCase(request.document().cpf())){
-            throw new BusinessException("declarant.already.exists");
+            throw new ConflictException(getMessage("declarant.already.exists"));
         }
 
         var declarantSaved = declarantRepository.save(declarant);
@@ -95,5 +98,10 @@ public class DeclarantService {
         if (id == null)
             throw new BusinessException("declarant.id.required");
         return declarantRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("declarant.not.found"));
+    }
+
+    private String getMessage(String key) {
+        return messageSource.getMessage(Objects.requireNonNull(key), null, "Messagem nao encontrada: " + key,
+                LocaleContextHolder.getLocale());
     }
 }
