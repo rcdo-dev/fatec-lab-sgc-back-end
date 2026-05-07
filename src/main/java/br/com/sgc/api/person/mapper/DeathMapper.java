@@ -12,6 +12,8 @@ public interface DeathMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "deceasedIdentified", ignore = true)
+    @Mapping(target = "deceasedUnidentified", ignore = true)
+    @Mapping(target = "deceasedPet", ignore = true)
     DeathEntity toEntity(DeathRequestDTO dto);
 
     @Mapping(target = "deceasedId", source = "deceasedIdentified.id")
