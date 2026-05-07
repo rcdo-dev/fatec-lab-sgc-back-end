@@ -11,6 +11,9 @@ import br.com.sgc.api.common.exception.classes.BusinessException;
 import br.com.sgc.api.common.exception.classes.ConflictException;
 import br.com.sgc.api.common.exception.classes.ResourceNotFoundException;
 import br.com.sgc.api.person.dto.request.DeclarantRequestDTO;
+import br.com.sgc.api.person.dto.request.support.AddressInfoRequestDTO;
+import br.com.sgc.api.person.dto.request.support.ContactInfoRequestDTO;
+import br.com.sgc.api.person.dto.request.support.DocumentInfoRequestDTO;
 import br.com.sgc.api.person.dto.response.DeclarantResponseDTO;
 import br.com.sgc.api.person.entity.DeclarantEntity;
 import br.com.sgc.api.person.entity.embeddable.AddressInfo;
@@ -24,19 +27,26 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class DeclarantService {
+
+    // ============================================================================================
+    // DEPENDENCIES
+    // ============================================================================================
+
     private final DeclarantRepository declarantRepository;
     private final DeclarantMapper mapper;
     private final MessageSource messageSource;
 
+    // ============================================================================================
+    // PUBLIC METHODS
+    // ============================================================================================
+
     public DeclarantResponseDTO save(DeclarantRequestDTO request) {
         var declarant = mapper.toEntity(request);
 
-        if(declarantRepository.existsByDocument_RgIgnoreCase(request.document().rg()) ||
-            declarantRepository.existsByDocument_CpfIgnoreCase(request.document().cpf())){
-            throw new ConflictException(getMessage("declarant.already.exists"));
-        }
+        validateDuplicatedDocuments(request);
 
         var declarantSaved = declarantRepository.save(declarant);
+
         return mapper.toResponse(declarantSaved);
     }
 
@@ -51,54 +61,78 @@ public class DeclarantService {
     public DeclarantResponseDTO update(Long id, DeclarantRequestDTO request) {
         var declarant = findByDeclarantId(id);
 
-        if (declarantRepository.existsByDocument_RgIgnoreCaseAndIdNot(request.document().rg(), id)){
-            throw new BusinessException("declarant.rg.already.exists");
-        }
-
-        if (declarantRepository.existsByDocument_CpfIgnoreCaseAndIdNot(request.document().cpf(), id)){
-            throw new BusinessException("declarant.cpf.already.exists");
-        }
+        validateUpdateDocuments(id, request);
 
         updateData(declarant, request);
+
         return mapper.toResponse(declarantRepository.save(declarant));
     }
 
-    private void updateData(DeclarantEntity declarant, DeclarantRequestDTO request){
-        var documentInfo = new DocumentInfo(
-                                request.document().rg(),
-                                request.document().cpf()
-                            );
-        var contactInfo = new ContatctInfo(
-                                request.contact().phone(),
-                                request.contact().email()
-                            );
-        var addressInfo = new AddressInfo(
-                                request.address().street(),
-                                request.address().number(),
-                                request.address().district(),
-                                request.address().city(),
-                                request.address().state(),
-                                request.address().cep()
-                            );
+    public void delete(Long id) {
+        var declarant = findByDeclarantId(id);
+        declarantRepository.delete(declarant);
+    }
+
+    // ============================================================================================
+    // VALIDATIONS
+    // ============================================================================================
+
+    private void validateDuplicatedDocuments(DeclarantRequestDTO request) {
+        if (declarantRepository.existsByDocument_RgIgnoreCase(request.document().rg())
+                || declarantRepository.existsByDocument_CpfIgnoreCase(request.document().cpf())) {
+            throw new ConflictException(getMessage("declarant.already.exists"));
+        }
+    }
+
+    private void validateUpdateDocuments(Long id, DeclarantRequestDTO request) {
+        if (declarantRepository.existsByDocument_RgIgnoreCaseAndIdNot(request.document().rg(), id)) {
+            throw new BusinessException(getMessage("declarant.rg.already.exists"));
+        }
+
+        if (declarantRepository.existsByDocument_CpfIgnoreCaseAndIdNot(request.document().cpf(), id)) {
+            throw new BusinessException(getMessage("declarant.cpf.already.exists"));
+        }
+    }
+
+    // ============================================================================================
+    // UPDATE HELPERS
+    // ============================================================================================
+
+    private void updateData(DeclarantEntity declarant, DeclarantRequestDTO request) {
         declarant.setName(request.name());
-        declarant.setDocument(documentInfo);
-        declarant.setContact(contactInfo);
-        declarant.setAddress(addressInfo);
+        declarant.setDocument(buildDocumentInfo(request.document()));
+        declarant.setContact(buildContatctInfo(request.contact()));
+        declarant.setAddress(buildAddressInfo(request.address()));
         declarant.setOccupation(request.occupation());
     }
 
-    public void delete (Long id){
-        if(!declarantRepository.existsById(id)){
-            throw new ResourceNotFoundException("declarant.not.found");
-        }
-        declarantRepository.deleteById(id);
+    private DocumentInfo buildDocumentInfo(DocumentInfoRequestDTO document) {
+        return new DocumentInfo(document.rg(), document.cpf());
     }
+
+    private ContatctInfo buildContatctInfo(ContactInfoRequestDTO contact) {
+        return new ContatctInfo(contact.phone(), contact.email());
+    }
+
+    private AddressInfo buildAddressInfo(AddressInfoRequestDTO address) {
+        return new AddressInfo(address.street(), address.number(), address.district(), address.city(), address.state(),
+                address.cep());
+    }
+
+    // ============================================================================================
+    // FIND METHODS
+    // ============================================================================================
 
     private DeclarantEntity findByDeclarantId(Long id) {
         if (id == null)
-            throw new BusinessException("declarant.id.required");
-        return declarantRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("declarant.not.found"));
+            throw new BusinessException(getMessage("declarant.id.required"));
+        return declarantRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(getMessage("declarant.not.found")));
     }
+
+    // ============================================================================================
+    // MESSAGE METHODS
+    // ============================================================================================
 
     private String getMessage(String key) {
         return messageSource.getMessage(Objects.requireNonNull(key), null, "Messagem nao encontrada: " + key,
