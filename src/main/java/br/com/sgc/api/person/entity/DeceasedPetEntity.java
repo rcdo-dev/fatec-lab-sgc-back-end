@@ -1,5 +1,8 @@
 package br.com.sgc.api.person.entity;
 
+import java.time.LocalDateTime;
+
+import br.com.sgc.api.common.enums.DeceasedStatus;
 import br.com.sgc.api.common.enums.GenderType;
 
 import jakarta.persistence.Column;
@@ -50,6 +53,15 @@ public class DeceasedPetEntity {
 
     @Column(name = "decp_estimated_age", nullable = false)
     private int estimatedAge;
+
+    @Column(name = "decp_status", nullable = false)
+    private DeceasedStatus deceasedStatus;
+
+    @Column(name = "decp_archived", nullable = false)
+    private boolean archived;
+
+    @Column(name = "decp_archived_at")
+    private LocalDateTime archivedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_decp_decla_id", nullable = false)

@@ -1,5 +1,8 @@
 package br.com.sgc.api.person.entity;
 
+import java.time.LocalDateTime;
+
+import br.com.sgc.api.common.enums.DeceasedStatus;
 import br.com.sgc.api.common.enums.EyeType;
 import br.com.sgc.api.common.enums.GenderType;
 import br.com.sgc.api.common.enums.HairType;
@@ -60,6 +63,15 @@ public class DeceasedUnidentifiedEntity {
 
     @Column(name = "decu_eye_type", nullable = false)
     private EyeType eyeType;
+
+    @Column(name = "decu_status", nullable = false)
+    private DeceasedStatus deceasedStatus;
+
+    @Column(name = "decu_archived", nullable = false)
+    private boolean archived;
+
+    @Column(name = "decu_archived_at")
+    private LocalDateTime archivedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_decu_decla_id", nullable = false)

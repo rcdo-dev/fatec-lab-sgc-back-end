@@ -1,7 +1,9 @@
 package br.com.sgc.api.person.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import br.com.sgc.api.common.enums.DeceasedStatus;
 import br.com.sgc.api.common.enums.GenderIdentityType;
 import br.com.sgc.api.common.enums.GenderType;
 import br.com.sgc.api.person.entity.embeddable.DocumentInfo;
@@ -77,6 +79,15 @@ public class DeceasedIdentifiedEntity {
 
     @Column(name = "deci_observations")
     private String observations;
+
+    @Column(name = "deci_status", nullable = false)
+    private DeceasedStatus deceasedStatus;
+
+    @Column(name = "deci_archived", nullable = false)
+    private boolean archived;
+
+    @Column(name = "deci_archived_at")
+    private LocalDateTime archivedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_deci_decla_id", nullable = false)

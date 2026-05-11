@@ -24,6 +24,8 @@ import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
 
+// Incluir os exemplos de código de exceção no swagger.
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/declarant")
