@@ -37,7 +37,10 @@ public class DeclarantController {
     public ResponseEntity<DeclarantResponseDTO> create(@Valid @RequestBody DeclarantRequestDTO request) {
         var response = declarantService.save(request);
 
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(response.id()).toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(response.id())
+                .toUri();
 
         return ResponseEntity.created(uri).body(response);
     }
