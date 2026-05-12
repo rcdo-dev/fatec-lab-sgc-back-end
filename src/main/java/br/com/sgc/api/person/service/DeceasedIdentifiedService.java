@@ -13,6 +13,7 @@ import br.com.sgc.api.common.enums.DeceasedStatus;
 import br.com.sgc.api.common.exception.classes.BusinessException;
 import br.com.sgc.api.common.exception.classes.ConflictException;
 import br.com.sgc.api.common.exception.classes.ResourceNotFoundException;
+
 import br.com.sgc.api.person.dto.request.DeceasedIdentifiedRequestDTO;
 import br.com.sgc.api.person.dto.request.support.DocumentInfoRequestDTO;
 import br.com.sgc.api.person.dto.response.DeceasedIdentifiedResponseDTO;
@@ -50,8 +51,7 @@ public class DeceasedIdentifiedService {
 
         validateDuplicatedDocuments(request);
 
-        var deceasedSaved = deceasedRepository.save(deceased);
-        return mapper.toResponse(deceasedSaved);
+        return mapper.toResponse(deceasedRepository.save(deceased));
     }
 
     public List<DeceasedIdentifiedResponseDTO> findAll() {
