@@ -54,6 +54,7 @@ public class DeceasedPetEntity {
     @Column(name = "decp_estimated_age", nullable = false)
     private int estimatedAge;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "decp_status", nullable = false)
     private DeceasedStatus deceasedStatus;
 

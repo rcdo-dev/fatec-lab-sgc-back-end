@@ -64,6 +64,7 @@ public class DeceasedUnidentifiedEntity {
     @Column(name = "decu_eye_type", nullable = false)
     private EyeType eyeType;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "decu_status", nullable = false)
     private DeceasedStatus deceasedStatus;
 

@@ -42,12 +42,14 @@ public class DeceasedUnidentifiedService {
 
         var declarant = declarantRepository.findById(request.declarantId())
                 .orElseThrow(() -> new ResourceNotFoundException(getMessage("declarant.not.found")));
+
         deceasedUnidentified.setDeclarant(declarant);
+        deceasedUnidentified.setDeceasedStatus(DeceasedStatus.ACTIVE);
 
         return mapper.toResponse(deceasedUnidentifiedRepository.save(deceasedUnidentified));
     }
 
-    public List<DeceasedUnidentifiedResponseDTO> list() {
+    public List<DeceasedUnidentifiedResponseDTO> findAll() {
         return deceasedUnidentifiedRepository.findAll().stream().map(mapper::toResponse).toList();
     }
 

@@ -80,6 +80,7 @@ public class DeceasedIdentifiedEntity {
     @Column(name = "deci_observations")
     private String observations;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "deci_status", nullable = false)
     private DeceasedStatus deceasedStatus;
 

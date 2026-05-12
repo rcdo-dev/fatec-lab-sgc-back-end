@@ -47,8 +47,10 @@ public class DeceasedIdentifiedService {
 
         var declarant = declarantRepository.findById(request.declarantId())
                 .orElseThrow(() -> new ResourceNotFoundException(getMessage("declarant.not.found")));
-        deceased.setDeclarant(declarant);
 
+        deceased.setDeclarant(declarant);
+        deceased.setDeceasedStatus(DeceasedStatus.ACTIVE);
+        
         validateDuplicatedDocuments(request);
 
         return mapper.toResponse(deceasedRepository.save(deceased));
