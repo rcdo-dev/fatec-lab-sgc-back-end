@@ -55,6 +55,7 @@ public class DeceasedUnidentifiedEntity {
     @Column(name = "decu_hair_color", nullable = false)
     private String hairColor;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "decu_hair_type", nullable = false)
     private HairType hairType;
 
