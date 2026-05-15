@@ -1,8 +1,5 @@
 package br.com.sgc.api.person.entity;
 
-import java.time.LocalDateTime;
-
-import br.com.sgc.api.common.enums.DeceasedStatus;
 import br.com.sgc.api.common.enums.GenderType;
 
 import jakarta.persistence.Column;
@@ -10,9 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -28,12 +22,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeceasedPetEntity {
+public class DeceasedPetEntity extends DeceasedEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "decp_id", nullable = false)
-    private Long id;
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @Column(name = "decp_id", nullable = false)
+    // private Long id;
 
     @Column(name = "decp_name", nullable = false)
     private String name;
@@ -54,15 +48,15 @@ public class DeceasedPetEntity {
     @Column(name = "decp_estimated_age", nullable = false)
     private int estimatedAge;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "decp_status", nullable = false)
-    private DeceasedStatus deceasedStatus;
+    // @Enumerated(EnumType.STRING)
+    // @Column(name = "decp_status", nullable = false)
+    // private DeceasedStatus deceasedStatus;
 
-    @Column(name = "decp_archived", nullable = false)
-    private boolean archived;
+    // @Column(name = "decp_archived", nullable = false)
+    // private boolean archived;
 
-    @Column(name = "decp_archived_at")
-    private LocalDateTime archivedAt;
+    // @Column(name = "decp_archived_at")
+    // private LocalDateTime archivedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_decp_decla_id", nullable = false)

@@ -1,8 +1,5 @@
 package br.com.sgc.api.person.entity;
 
-import java.time.LocalDateTime;
-
-import br.com.sgc.api.common.enums.DeceasedStatus;
 import br.com.sgc.api.common.enums.EyeType;
 import br.com.sgc.api.common.enums.GenderType;
 import br.com.sgc.api.common.enums.HairType;
@@ -13,9 +10,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -31,12 +25,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeceasedUnidentifiedEntity {
+public class DeceasedUnidentifiedEntity extends DeceasedEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "decu_id", nullable = false)
-    private Long id;
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @Column(name = "decu_id", nullable = false)
+    // private Long id;
 
     @Column(name = "decu_estimated_age", nullable = false)
     private int estimatedAge;
@@ -65,15 +59,15 @@ public class DeceasedUnidentifiedEntity {
     @Column(name = "decu_eye_type", nullable = false)
     private EyeType eyeType;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "decu_status", nullable = false)
-    private DeceasedStatus deceasedStatus;
+    // @Enumerated(EnumType.STRING)
+    // @Column(name = "decu_status", nullable = false)
+    // private DeceasedStatus deceasedStatus;
 
-    @Column(name = "decu_archived", nullable = false)
-    private boolean archived;
+    // @Column(name = "decu_archived", nullable = false)
+    // private boolean archived;
 
-    @Column(name = "decu_archived_at")
-    private LocalDateTime archivedAt;
+    // @Column(name = "decu_archived_at")
+    // private LocalDateTime archivedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_decu_decla_id", nullable = false)

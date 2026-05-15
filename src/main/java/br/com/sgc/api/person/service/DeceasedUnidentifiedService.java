@@ -44,7 +44,7 @@ public class DeceasedUnidentifiedService {
                 .orElseThrow(() -> new ResourceNotFoundException(getMessage("declarant.not.found")));
 
         deceasedUnidentified.setDeclarant(declarant);
-        deceasedUnidentified.setDeceasedStatus(DeceasedStatus.ACTIVE);
+        deceasedUnidentified.setStatus(DeceasedStatus.ACTIVE);
 
         return mapper.toResponse(deceasedUnidentifiedRepository.save(deceasedUnidentified));
     }
@@ -70,7 +70,7 @@ public class DeceasedUnidentifiedService {
         var deceased = findByDeceasedUnidentifiedId(id);
 
         deceased.setArchived(true);
-        deceased.setDeceasedStatus(DeceasedStatus.ARCHIVED);
+        deceased.setStatus(DeceasedStatus.ARCHIVED);
         deceased.setArchivedAt(LocalDateTime.now());
 
         deceasedUnidentifiedRepository.save(deceased);

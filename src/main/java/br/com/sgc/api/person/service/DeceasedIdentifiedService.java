@@ -49,7 +49,7 @@ public class DeceasedIdentifiedService {
                 .orElseThrow(() -> new ResourceNotFoundException(getMessage("declarant.not.found")));
 
         deceased.setDeclarant(declarant);
-        deceased.setDeceasedStatus(DeceasedStatus.ACTIVE);
+        deceased.setStatus(DeceasedStatus.ACTIVE);
         
         validateDuplicatedDocuments(request);
 
@@ -78,7 +78,7 @@ public class DeceasedIdentifiedService {
     public void archive(Long id) {
         var deceased = findDeceasedById(id);
 
-        deceased.setDeceasedStatus(DeceasedStatus.ARCHIVED);
+        deceased.setStatus(DeceasedStatus.ARCHIVED);
         deceased.setArchived(true);
         deceased.setArchivedAt(LocalDateTime.now());
 

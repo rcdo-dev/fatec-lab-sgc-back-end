@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import br.com.sgc.api.person.entity.DeathEntity;
 
 public interface DeathRepository extends JpaRepository<DeathEntity, Long> {
-
+    boolean existsByDeceasedId(Long deceasedId);
 }

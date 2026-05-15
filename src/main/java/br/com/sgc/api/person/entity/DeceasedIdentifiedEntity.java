@@ -1,9 +1,7 @@
 package br.com.sgc.api.person.entity;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-import br.com.sgc.api.common.enums.DeceasedStatus;
 import br.com.sgc.api.common.enums.GenderIdentityType;
 import br.com.sgc.api.common.enums.GenderType;
 import br.com.sgc.api.person.entity.embeddable.DocumentInfo;
@@ -16,9 +14,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -34,12 +29,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeceasedIdentifiedEntity {
+public class DeceasedIdentifiedEntity extends DeceasedEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "deci_id", nullable = false)
-    private Long id;
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @Column(name = "deci_id", nullable = false)
+    // private Long id;
 
     @Column(name = "deci_name", nullable = false)
     private String name;
@@ -80,15 +75,15 @@ public class DeceasedIdentifiedEntity {
     @Column(name = "deci_observations")
     private String observations;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "deci_status", nullable = false)
-    private DeceasedStatus deceasedStatus;
+    // @Enumerated(EnumType.STRING)
+    // @Column(name = "deci_status", nullable = false)
+    // private DeceasedStatus deceasedStatus;
 
-    @Column(name = "deci_archived", nullable = false)
-    private boolean archived;
+    // @Column(name = "deci_archived", nullable = false)
+    // private boolean archived;
 
-    @Column(name = "deci_archived_at")
-    private LocalDateTime archivedAt;
+    // @Column(name = "deci_archived_at")
+    // private LocalDateTime archivedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_deci_decla_id", nullable = false)

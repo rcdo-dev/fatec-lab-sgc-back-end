@@ -34,8 +34,18 @@ public record DeathResponseDTO(
     @Schema(description = "Campo para observações do óbito", example = "Poderia estar vivo e cantando.")
     String observations,
 
-    @Schema(description = "Indica a qual falecido este óbito pertence.", example = "1")
+    // @Schema(description = "Indica a qual falecido este óbito pertence.")
+    // Long deceasedIdentifiedId,
+
+    // @Schema(description = "Indica a qual falecido este óbito pertence.")
+    // Long deceasedUnidentifiedId,
+
+    // @Schema(description = "Indica a qual falecido este óbito pertence.")
+    // Long deceasedPetId
+
+    @Schema(description = "Indica a qual falecido este óbito pertence.")
     Long deceasedId
+
 ) {
 
 }

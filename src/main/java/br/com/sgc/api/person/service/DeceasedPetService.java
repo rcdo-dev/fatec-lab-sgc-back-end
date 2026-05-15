@@ -41,7 +41,7 @@ public class DeceasedPetService {
         var declarant = declarantRepository.findById(request.declarantId())
                 .orElseThrow(() -> new ResourceNotFoundException(getMessage("deceased.not.found")));
         deceased.setDeclarant(declarant);
-        deceased.setDeceasedStatus(DeceasedStatus.ACTIVE);
+        deceased.setStatus(DeceasedStatus.ACTIVE);
 
         return mapper.toResponse(deceasedPetRepository.save(deceased));
     }
@@ -66,7 +66,7 @@ public class DeceasedPetService {
         var deceased = findByDeceasedPetId(id);
 
         deceased.setArchived(true);
-        deceased.setDeceasedStatus(DeceasedStatus.ARCHIVED);
+        deceased.setStatus(DeceasedStatus.ARCHIVED);
         deceased.setArchivedAt(LocalDateTime.now());
 
         deceasedPetRepository.save(deceased);
