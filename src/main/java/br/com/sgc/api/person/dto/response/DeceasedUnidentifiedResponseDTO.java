@@ -1,7 +1,10 @@
 package br.com.sgc.api.person.dto.response;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import br.com.sgc.api.common.enums.DeceasedStatus;
 import br.com.sgc.api.common.enums.EyeType;
 import br.com.sgc.api.common.enums.GenderType;
 import br.com.sgc.api.common.enums.HairType;
@@ -38,6 +41,15 @@ public record DeceasedUnidentifiedResponseDTO(
 
     @Schema(description = "Tipo dos olhos (ALMOND_SHAPED / ROUND / DROOPY / DEEP_SET / PROTRUDING / ASIAN / ASYMMETRICAL).", example = "ROUND")
     EyeType eyeType,
+
+    @Schema(description = "Gênero (ACTIVE / BURIED / EXHUMED / TRANSFERRED / ARCHIVED).", example = "ACTIVE")
+    DeceasedStatus deceasedStatus,
+
+    @Schema(description = "Este dado foi arquivado?", example = "false")
+    boolean archived,
+
+    @Schema(description = "Data do arquivamento.", example = "2026-04-23")
+    LocalDateTime archivedAt,
 
     @Schema(description = "ID do declarante.", example = "1")
     Long declarantId

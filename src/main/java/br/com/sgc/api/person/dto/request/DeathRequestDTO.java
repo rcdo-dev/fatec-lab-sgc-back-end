@@ -40,18 +40,6 @@ public record DeathRequestDTO(
     @Schema(description = "Campo para observações do óbito", example = "Poderia estar vivo e cantando.")
     String observations,
 
-    // @Schema(description = "Indica se o falecido é identificado.", example = "1")
-    // @Positive(message = "{validation.required.positive}")
-    // Long deceasedIdentifiedId,
-
-    // @Schema(description = "Indica se o falecido não é identificado.", example = "null")
-    // @Positive(message = "{validation.required.positive}")
-    // Long deceasedUnidentifiedId,
-
-    // @Schema(description = "Indica se o falecido é um Pet.", example = "null")
-    // @Positive(message = "{validation.required.positive}")
-    // Long deceasedPetId
-
     @Schema(description = "Indica qual o tipo do falecido.", example = "1")
     @Positive(message = "{validation.required.positive}")
     Long deceasedId

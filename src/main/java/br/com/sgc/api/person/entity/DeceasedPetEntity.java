@@ -23,12 +23,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeceasedPetEntity extends DeceasedEntity{
-
-    // @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // @Column(name = "decp_id", nullable = false)
-    // private Long id;
-
     @Column(name = "decp_name", nullable = false)
     private String name;
 
@@ -47,16 +41,6 @@ public class DeceasedPetEntity extends DeceasedEntity{
 
     @Column(name = "decp_estimated_age", nullable = false)
     private int estimatedAge;
-
-    // @Enumerated(EnumType.STRING)
-    // @Column(name = "decp_status", nullable = false)
-    // private DeceasedStatus deceasedStatus;
-
-    // @Column(name = "decp_archived", nullable = false)
-    // private boolean archived;
-
-    // @Column(name = "decp_archived_at")
-    // private LocalDateTime archivedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_decp_decla_id", nullable = false)

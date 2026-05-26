@@ -1,7 +1,10 @@
 package br.com.sgc.api.person.dto.response;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import br.com.sgc.api.common.enums.DeceasedStatus;
 import br.com.sgc.api.common.enums.GenderType;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -28,6 +31,15 @@ public record DeceasedPetResponseDTO(
 
     @Schema(description = "Idade estimada do animal.", example = "11")
     int estimatedAge,
+
+    @Schema(description = "Gênero (ACTIVE / BURIED / EXHUMED / TRANSFERRED / ARCHIVED).", example = "ACTIVE")
+    DeceasedStatus deceasedStatus,
+
+    @Schema(description = "Este dado foi arquivado?", example = "false")
+    boolean archived,
+
+    @Schema(description = "Data do arquivamento.", example = "2026-04-23")
+    LocalDateTime archivedAt,
 
     @Schema(description = "ID do declarante.", example = "1")
     Long declarantId

@@ -26,12 +26,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeceasedUnidentifiedEntity extends DeceasedEntity{
-
-    // @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // @Column(name = "decu_id", nullable = false)
-    // private Long id;
-
     @Column(name = "decu_estimated_age", nullable = false)
     private int estimatedAge;
 
@@ -58,16 +52,6 @@ public class DeceasedUnidentifiedEntity extends DeceasedEntity{
 
     @Column(name = "decu_eye_type", nullable = false)
     private EyeType eyeType;
-
-    // @Enumerated(EnumType.STRING)
-    // @Column(name = "decu_status", nullable = false)
-    // private DeceasedStatus deceasedStatus;
-
-    // @Column(name = "decu_archived", nullable = false)
-    // private boolean archived;
-
-    // @Column(name = "decu_archived_at")
-    // private LocalDateTime archivedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_decu_decla_id", nullable = false)

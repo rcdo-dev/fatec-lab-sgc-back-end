@@ -1,5 +1,8 @@
 package br.com.sgc.api.person.dto.request;
 
+import java.time.LocalDateTime;
+
+import br.com.sgc.api.common.enums.DeceasedStatus;
 import br.com.sgc.api.common.enums.GenderType;
 
 import jakarta.validation.constraints.NotBlank;
@@ -34,6 +37,18 @@ public record DeceasedPetRequestDTO(
     @NotNull(message = "{validation.assigned.value.cannot.be.null}")
     @Positive(message = "{validation.required.positive}")
     int estimatedAge,
+
+    @Schema(description = "Gênero (ACTIVE / BURIED / EXHUMED / TRANSFERRED / ARCHIVED).", example = "ACTIVE")
+    @NotNull(message = "{validation.assigned.value.cannot.be.null}")
+    DeceasedStatus deceasedStatus,
+
+    @Schema(description = "Este dado foi arquivado?", example = "false")
+    @NotNull(message = "{validation.assigned.value.cannot.be.null}")
+    boolean archived,
+
+    @Schema(description = "Data do arquivamento.", example = "2026-04-23")
+    @NotNull(message = "{validation.assigned.value.cannot.be.null}")
+    LocalDateTime archivedAt,
 
     @Schema(description = "ID do declarante.", example = "1")
     @NotNull(message = "{validation.assigned.value.cannot.be.null}")

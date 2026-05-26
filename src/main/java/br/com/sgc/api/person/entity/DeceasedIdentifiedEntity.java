@@ -1,7 +1,6 @@
 package br.com.sgc.api.person.entity;
 
 import java.time.LocalDate;
-
 import br.com.sgc.api.common.enums.GenderIdentityType;
 import br.com.sgc.api.common.enums.GenderType;
 import br.com.sgc.api.person.entity.embeddable.DocumentInfo;
@@ -30,11 +29,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeceasedIdentifiedEntity extends DeceasedEntity{
-
-    // @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // @Column(name = "deci_id", nullable = false)
-    // private Long id;
 
     @Column(name = "deci_name", nullable = false)
     private String name;
@@ -74,16 +68,6 @@ public class DeceasedIdentifiedEntity extends DeceasedEntity{
 
     @Column(name = "deci_observations")
     private String observations;
-
-    // @Enumerated(EnumType.STRING)
-    // @Column(name = "deci_status", nullable = false)
-    // private DeceasedStatus deceasedStatus;
-
-    // @Column(name = "deci_archived", nullable = false)
-    // private boolean archived;
-
-    // @Column(name = "deci_archived_at")
-    // private LocalDateTime archivedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_deci_decla_id", nullable = false)

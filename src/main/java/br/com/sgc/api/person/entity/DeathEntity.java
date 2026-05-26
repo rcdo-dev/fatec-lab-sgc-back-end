@@ -52,18 +52,6 @@ public class DeathEntity {
     @Column(name = "dea_observations")
     private String observations;
 
-    // @OneToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "fk_dea_deci_id", unique = true)
-    // private DeceasedIdentifiedEntity deceasedIdentified;
-
-    // @OneToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "fk_dea_decu_id", unique = true)
-    // private DeceasedUnidentifiedEntity deceasedUnidentified;
-
-    // @OneToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "fk_dea_decp_id", unique = true)
-    // private DeceasedPetEntity deceasedPet;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_dea_dec_id", nullable = false, unique = true)
     private DeceasedEntity deceased;
