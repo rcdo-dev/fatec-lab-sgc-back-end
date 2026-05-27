@@ -1,0 +1,5 @@
+package br.com.sgc.api.burial.entity;
+
+public class FileEntity {
+
+}
