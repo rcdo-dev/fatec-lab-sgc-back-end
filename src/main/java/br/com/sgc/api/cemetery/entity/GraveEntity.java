@@ -1,5 +1,6 @@
 package br.com.sgc.api.cemetery.entity;
 
+import br.com.sgc.api.burial.entity.BurialEntity;
 import br.com.sgc.api.common.enums.AreaType;
 import br.com.sgc.api.common.enums.GraveStatus;
 import br.com.sgc.api.common.enums.GraveType;
@@ -14,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
@@ -71,4 +73,7 @@ public class GraveEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_gra_blo_id", nullable = false)
     private BlockEntity block;
+
+    @OneToMany(mappedBy = "grave", fetch = FetchType.LAZY)
+    private BurialEntity burial;
 }
