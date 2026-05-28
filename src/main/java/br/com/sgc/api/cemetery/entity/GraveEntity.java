@@ -1,5 +1,8 @@
 package br.com.sgc.api.cemetery.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.sgc.api.burial.entity.BurialEntity;
 import br.com.sgc.api.common.enums.AreaType;
 import br.com.sgc.api.common.enums.GraveStatus;
@@ -75,5 +78,5 @@ public class GraveEntity {
     private BlockEntity block;
 
     @OneToMany(mappedBy = "grave", fetch = FetchType.LAZY)
-    private BurialEntity burial;
+    private List<BurialEntity> burials = new ArrayList<>();
 }
