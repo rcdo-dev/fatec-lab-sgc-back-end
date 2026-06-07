@@ -41,6 +41,7 @@ public record DeathRequestDTO(
     String observations,
 
     @Schema(description = "Indica qual o tipo do falecido.", example = "1")
+    @NotNull(message = "{validation.assigned.value.cannot.be.null}")
     @Positive(message = "{validation.required.positive}")
     Long deceasedId
 ) {

@@ -12,4 +12,6 @@ public interface DeceasedIdentifiedRepository extends JpaRepository<DeceasedIden
     boolean existsByDocument_RgIgnoreCaseAndIdNot(String rg, Long id);
 
     boolean existsByDocument_CpfIgnoreCaseAndIdNot(String cpf, Long id);
+
+    boolean existsByDeclarantId(Long declarantId);
 }

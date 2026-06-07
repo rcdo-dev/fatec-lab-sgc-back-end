@@ -3,6 +3,8 @@ package br.com.sgc.api.cemetery.service;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import br.com.sgc.api.cemetery.dto.request.GraveRequestDTO;
@@ -27,6 +29,7 @@ public class GraveService {
     private final GraveRepository graveRepository;
     private final BlockRepository blockRepository;
     private final GraveMapper mapper;
+    private final MessageSource messageSource;
 
     // ------------------ CRUD
 
@@ -36,12 +39,12 @@ public class GraveService {
         validateBodyCapacity(request.graveType(), request.bodyCapacity());
 
         if (graveRepository.existsByNumberAndBlockId(request.number(), request.blockId())) {
-            throw new ConflictException("grave.number.already.exists");
+            throw new ConflictException(getMessage("grave.number.already.exists"));
         }
 
         var blockEntity = blockRepository
-                .findById(Objects.requireNonNull(request.blockId(), "block.id.required"))
-                .orElseThrow(() -> new ResourceNotFoundException("block.not.found"));
+                .findById(Objects.requireNonNull(request.blockId(), getMessage("block.id.required")))
+                .orElseThrow(() -> new ResourceNotFoundException(getMessage("block.not.found")));
 
         var graveEntity = mapper.toEntity(request);
         graveEntity.setActive(true);
@@ -86,18 +89,18 @@ public class GraveService {
 
     private GraveEntity findGraveById(Long id) {
         if (id == null) {
-            throw new BusinessException("grave.id.required");
+            throw new BusinessException(getMessage("grave.id.required"));
         }
 
         return graveRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("grave.not.found"));
+                .orElseThrow(() -> new ResourceNotFoundException(getMessage("grave.not.found")));
     }
 
     private GraveEntity findActiveGraveById(Long id) {
         var graveEntity = findGraveById(id);
 
         if (!graveEntity.isActive()) {
-            throw new BusinessException("grave.inactive");
+            throw new BusinessException(getMessage("grave.inactive"));
         }
 
         return graveEntity;
@@ -111,7 +114,7 @@ public class GraveService {
         var graveEntity = findActiveGraveById(graveId);
 
         if (graveEntity.getStatus() != GraveStatus.AVAILABLE) {
-            throw new BusinessException("grave.unavailable");
+            throw new BusinessException(getMessage("grave.unavailable"));
         }
 
         graveEntity.setStatus(GraveStatus.OCCUPIED);
@@ -122,7 +125,7 @@ public class GraveService {
         var graveEntity = findActiveGraveById(graveId);
 
         if (graveEntity.getStatus() != GraveStatus.OCCUPIED) {
-            throw new BusinessException("grave.available");
+            throw new BusinessException(getMessage("grave.available"));
         }
 
         graveEntity.setStatus(GraveStatus.AVAILABLE);
@@ -133,7 +136,7 @@ public class GraveService {
         var graveEntity = findActiveGraveById(graveId);
 
         if (graveEntity.getStatus() != GraveStatus.AVAILABLE) {
-            throw new BusinessException("grave.unavailable");
+            throw new BusinessException(getMessage("grave.unavailable"));
         }
 
         graveEntity.setStatus(GraveStatus.MAINTENANCE);
@@ -144,7 +147,7 @@ public class GraveService {
         var graveEntity = findActiveGraveById(graveId);
 
         if (graveEntity.getStatus() != GraveStatus.MAINTENANCE) {
-            throw new BusinessException("grave.available");
+            throw new BusinessException(getMessage("grave.available"));
         }
 
         graveEntity.setStatus(GraveStatus.AVAILABLE);
@@ -174,10 +177,10 @@ public class GraveService {
     // --- Activation
 
     public void activate(Long graveId) {
-        var graveEntity = findActiveGraveById(graveId);
+        var graveEntity = findGraveById(graveId);
 
         if (graveEntity.isActive()) {
-            throw new BusinessException("grave.active");
+            throw new BusinessException(getMessage("grave.active"));
         }
 
         graveEntity.setActive(true);
@@ -188,22 +191,27 @@ public class GraveService {
 
     private void validateAreaTypeAndGraveType(AreaType areaType, GraveType graveType) {
         if (areaType == AreaType.COMMON && graveType != GraveType.EARTH) {
-            throw new BusinessException("grave.common.area.earth.type");
+            throw new BusinessException(getMessage("grave.common.area.earth.type"));
         }
 
         if (areaType == AreaType.PERPETUAL && graveType != GraveType.EARTH && graveType != GraveType.MAUSOLEUM) {
-            throw new BusinessException("grave.perpetual.earth.mausoleum.type");
+            throw new BusinessException(getMessage("grave.perpetual.earth.mausoleum.type"));
         }
     }
 
     private void validateBodyCapacity(GraveType graveType, int bodyCapacity) {
         if (graveType == GraveType.EARTH && bodyCapacity > 2) {
-            throw new BusinessException("grave.earth.type.capacity");
+            throw new BusinessException(getMessage("grave.earth.type.capacity"));
         }
 
         if (graveType == GraveType.MAUSOLEUM && bodyCapacity > 4) {
-            throw new BusinessException("grave.mausoleum.type.capacity");
+            throw new BusinessException(getMessage("grave.mausoleum.type.capacity"));
         }
+    }
+
+    private String getMessage(String key) {
+        return messageSource.getMessage(Objects.requireNonNull(key), null, "Messagem nao encontrada: " + key,
+                LocaleContextHolder.getLocale());
     }
 
 }

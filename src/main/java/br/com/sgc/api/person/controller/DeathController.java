@@ -51,13 +51,13 @@ public class DeathController {
         return ResponseEntity.ok(deathService.findById(id));
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<DeathResponseDTO> update(@PathVariable("id") Long id,
             @Valid @RequestBody DeathRequestDTO request) {
         return ResponseEntity.ok(deathService.update(id, request));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<DeathResponseDTO> delete(@PathVariable("id") Long id) {
         deathService.delete(id);
         return ResponseEntity.noContent().build();

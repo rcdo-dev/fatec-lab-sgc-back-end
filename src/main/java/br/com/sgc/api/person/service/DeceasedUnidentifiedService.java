@@ -8,7 +8,10 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.sgc.api.burial.repositories.BurialRepository;
+import br.com.sgc.api.common.enums.BurialStatus;
 import br.com.sgc.api.common.enums.DeceasedStatus;
+import br.com.sgc.api.common.exception.classes.BusinessException;
 import br.com.sgc.api.common.exception.classes.ResourceNotFoundException;
 
 import br.com.sgc.api.person.dto.request.DeceasedUnidentifiedRequestDTO;
@@ -30,6 +33,7 @@ public class DeceasedUnidentifiedService {
 
     private final DeceasedUnidentifiedRepository deceasedUnidentifiedRepository;
     private final DeclarantRepository declarantRepository;
+    private final BurialRepository burialRepository;
     private final DeceasedUnidentifiedMapper mapper;
     private final MessageSource messageSource;
 
@@ -45,6 +49,8 @@ public class DeceasedUnidentifiedService {
 
         deceasedUnidentified.setDeclarant(declarant);
         deceasedUnidentified.setStatus(DeceasedStatus.ACTIVE);
+        deceasedUnidentified.setArchived(false);
+        deceasedUnidentified.setArchivedAt(null);
 
         return mapper.toResponse(deceasedUnidentifiedRepository.save(deceasedUnidentified));
     }
@@ -61,6 +67,7 @@ public class DeceasedUnidentifiedService {
     public DeceasedUnidentifiedResponseDTO update(Long id, DeceasedUnidentifiedRequestDTO request) {
         var deceased = findByDeceasedUnidentifiedId(id);
 
+        validateNotArchived(deceased);
         updateData(deceased, request);
 
         return mapper.toResponse(deceasedUnidentifiedRepository.save(deceased));
@@ -69,11 +76,30 @@ public class DeceasedUnidentifiedService {
     public void archived(Long id) {
         var deceased = findByDeceasedUnidentifiedId(id);
 
+        validateNotArchived(deceased);
+        validateWithoutActiveBurial(deceased.getId());
+
         deceased.setArchived(true);
         deceased.setStatus(DeceasedStatus.ARCHIVED);
         deceased.setArchivedAt(LocalDateTime.now());
 
         deceasedUnidentifiedRepository.save(deceased);
+    }
+
+    // ============================================================================================
+    // VALIDATIONS
+    // ============================================================================================
+
+    private void validateNotArchived(DeceasedUnidentifiedEntity deceased) {
+        if (deceased.isArchived() || deceased.getStatus() == DeceasedStatus.ARCHIVED) {
+            throw new BusinessException(getMessage("deceased.archived"));
+        }
+    }
+
+    private void validateWithoutActiveBurial(Long deceasedId) {
+        if (burialRepository.existsByDeceasedIdAndStatus(deceasedId, BurialStatus.IN_PROGRESS)) {
+            throw new BusinessException(getMessage("deceased.active.burial"));
+        }
     }
 
     // ============================================================================================
@@ -96,6 +122,9 @@ public class DeceasedUnidentifiedService {
     // ============================================================================================
 
     private DeceasedUnidentifiedEntity findByDeceasedUnidentifiedId(Long id) {
+        if (id == null) {
+            throw new BusinessException(getMessage("deceased.id.required"));
+        }
         return deceasedUnidentifiedRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(getMessage("deceased.not.found")));
     }

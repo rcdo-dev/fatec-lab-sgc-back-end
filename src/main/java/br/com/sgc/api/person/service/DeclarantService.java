@@ -20,6 +20,9 @@ import br.com.sgc.api.person.entity.embeddable.AddressInfo;
 import br.com.sgc.api.person.entity.embeddable.ContatctInfo;
 import br.com.sgc.api.person.entity.embeddable.DocumentInfo;
 import br.com.sgc.api.person.mapper.DeclarantMapper;
+import br.com.sgc.api.person.repositories.DeceasedIdentifiedRepository;
+import br.com.sgc.api.person.repositories.DeceasedPetRepository;
+import br.com.sgc.api.person.repositories.DeceasedUnidentifiedRepository;
 import br.com.sgc.api.person.repositories.DeclarantRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,9 @@ public class DeclarantService {
     // ============================================================================================
 
     private final DeclarantRepository declarantRepository;
+    private final DeceasedIdentifiedRepository deceasedIdentifiedRepository;
+    private final DeceasedUnidentifiedRepository deceasedUnidentifiedRepository;
+    private final DeceasedPetRepository deceasedPetRepository;
     private final DeclarantMapper mapper;
     private final MessageSource messageSource;
 
@@ -70,6 +76,7 @@ public class DeclarantService {
 
     public void delete(Long id) {
         var declarant = findByDeclarantId(id);
+        validateWithoutRelatedDeceased(declarant.getId());
         declarantRepository.delete(declarant);
     }
 
@@ -91,6 +98,14 @@ public class DeclarantService {
 
         if (declarantRepository.existsByDocument_CpfIgnoreCaseAndIdNot(request.document().cpf(), id)) {
             throw new BusinessException(getMessage("declarant.cpf.already.exists"));
+        }
+    }
+
+    private void validateWithoutRelatedDeceased(Long declarantId) {
+        if (deceasedIdentifiedRepository.existsByDeclarantId(declarantId)
+                || deceasedUnidentifiedRepository.existsByDeclarantId(declarantId)
+                || deceasedPetRepository.existsByDeclarantId(declarantId)) {
+            throw new BusinessException(getMessage("declarant.has.deceased"));
         }
     }
 

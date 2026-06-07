@@ -16,6 +16,6 @@ public interface DeceasedPetMapper {
     DeceasedPetEntity toEntity(DeceasedPetRequestDTO dto);
 
     @Mapping(target = "declarantId", source = "declarant.id")
-    @Mapping(target = "deceasedStatus", ignore = true)
+    @Mapping(target = "deceasedStatus", source = "status")
     DeceasedPetResponseDTO toResponse(DeceasedPetEntity entity);
 }

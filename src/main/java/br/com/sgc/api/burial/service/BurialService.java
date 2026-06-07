@@ -21,6 +21,7 @@ import br.com.sgc.api.common.exception.classes.BusinessException;
 import br.com.sgc.api.common.exception.classes.ConflictException;
 import br.com.sgc.api.common.exception.classes.ResourceNotFoundException;
 import br.com.sgc.api.person.entity.DeceasedEntity;
+import br.com.sgc.api.person.repositories.DeathRepository;
 import br.com.sgc.api.person.repositories.DeceasedRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,7 @@ public class BurialService {
 
     private final BurialRepository burialRepository;
     private final DeceasedRepository deceasedRepository;
+    private final DeathRepository deathRepository;
     private final GraveRepository graveRepository;
     private final BurialMapper mapper;
     private final MessageSource messageSource;
@@ -49,10 +51,10 @@ public class BurialService {
         var grave = findGraveById(request.graveId());
 
         validateDeceasedCanBeBuried(deceased);
+        validateDeceasedHasDeath(deceased.getId());
         validateDeceasedWithoutActiveBurial(deceased.getId());
         validateGraveCanReceiveBurial(grave);
-        validateGraveWithoutActiveBurial(grave.getId());
-        validateGraveCapacity(grave);
+        validateGraveCapacity(grave, null);
 
         var burial = mapper.toEntity(request);
         burial.setDeceased(deceased);
@@ -132,6 +134,12 @@ public class BurialService {
         }
     }
 
+    private void validateDeceasedHasDeath(Long deceasedId) {
+        if (!deathRepository.existsByDeceasedId(deceasedId)) {
+            throw new BusinessException(getMessage("burial.death.required"));
+        }
+    }
+
     private void validateDeceasedWithoutActiveBurial(Long deceasedId) {
         if (burialRepository.existsByDeceasedIdAndStatus(deceasedId, BurialStatus.IN_PROGRESS)) {
             throw new ConflictException(getMessage("burial.already.exists.for.deceased"));
@@ -147,26 +155,30 @@ public class BurialService {
             throw new BusinessException(getMessage("burial.grave.in.maintenance"));
         }
 
-        if (grave.getStatus() != GraveStatus.AVAILABLE) {
-            throw new BusinessException(getMessage("burial.grave.not.available"));
+        if (grave.isBlocked()) {
+            throw new BusinessException(getMessage("burial.grave.blocked"));
         }
     }
 
-    private void validateGraveWithoutActiveBurial(Long graveId) {
-        if (burialRepository.existsByGraveIdAndStatus(graveId, BurialStatus.IN_PROGRESS)) {
-            throw new ConflictException(getMessage("burial.already.exists.for.grave"));
-        }
-    }
-
-    private void validateGraveCapacity(GraveEntity grave) {
+    private void validateGraveCapacity(GraveEntity grave, Long currentBurialId) {
         if (grave.getBodyCapacity() <= 0) {
             throw new BusinessException(getMessage("burial.grave.not.available"));
+        }
+
+        var activeBurials = currentBurialId == null
+                ? burialRepository.countByGraveIdAndStatus(grave.getId(), BurialStatus.IN_PROGRESS)
+                : burialRepository.countByGraveIdAndStatusAndIdNot(grave.getId(), BurialStatus.IN_PROGRESS,
+                        currentBurialId);
+
+        if (activeBurials >= grave.getBodyCapacity()) {
+            throw new BusinessException(getMessage("burial.grave.full"));
         }
     }
 
     private void validateDeceasedCanBeUpdatedForBurial(BurialEntity burial, DeceasedEntity deceased) {
         if (!burial.getDeceased().getId().equals(deceased.getId())) {
             validateDeceasedCanBeBuried(deceased);
+            validateDeceasedHasDeath(deceased.getId());
             validateDeceasedWithoutActiveBurial(deceased.getId());
             return;
         }
@@ -179,8 +191,7 @@ public class BurialService {
     private void validateGraveCanBeUpdatedForBurial(BurialEntity burial, GraveEntity grave) {
         if (!burial.getGrave().getId().equals(grave.getId())) {
             validateGraveCanReceiveBurial(grave);
-            validateGraveCapacity(grave);
-            validateGraveWithoutActiveBurial(grave.getId());
+            validateGraveCapacity(grave, burial.getId());
             return;
         }
 
@@ -191,6 +202,12 @@ public class BurialService {
         if (grave.getStatus() == GraveStatus.MAINTENANCE) {
             throw new BusinessException(getMessage("burial.grave.in.maintenance"));
         }
+
+        if (grave.isBlocked()) {
+            throw new BusinessException(getMessage("burial.grave.blocked"));
+        }
+
+        validateGraveCapacity(grave, burial.getId());
     }
 
     // ============================================================================================

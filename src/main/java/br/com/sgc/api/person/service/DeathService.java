@@ -6,6 +6,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
+import br.com.sgc.api.common.enums.DeceasedStatus;
+import br.com.sgc.api.common.exception.classes.BusinessException;
 import br.com.sgc.api.common.exception.classes.ConflictException;
 import br.com.sgc.api.common.exception.classes.ResourceNotFoundException;
 
@@ -37,12 +39,12 @@ public class DeathService {
 
     public DeathResponseDTO save(DeathRequestDTO request) {
         var death = mapper.toEntity(request);
-
-        validateExistingDeath(request);
-
-        // Polimorfismo aplicado aqui.
         var deceased = deceasedRepository.findById(request.deceasedId())
                 .orElseThrow(() -> new ResourceNotFoundException(getMessage("deceased.not.found")));
+
+        validateExistingDeath(request);
+        validateDeceasedNotArchived(deceased.isArchived(), deceased.getStatus());
+
         death.setDeceased(deceased);
 
         return mapper.toResponse(deathRepository.save(death));
@@ -60,7 +62,7 @@ public class DeathService {
     public DeathResponseDTO update(Long id, DeathRequestDTO request) {
         var death = findByDeathId(id);
 
-        validateExistingDeath(request);
+        validateSameDeceased(death, request.deceasedId());
 
         updateData(death, request);
 
@@ -78,6 +80,18 @@ public class DeathService {
     private void validateExistingDeath(DeathRequestDTO request) {
         if (deathRepository.existsByDeceasedId(request.deceasedId())) {
             throw new ConflictException(getMessage("death.already.exists"));
+        }
+    }
+
+    private void validateSameDeceased(DeathEntity death, Long deceasedId) {
+        if (!death.getDeceased().getId().equals(deceasedId)) {
+            throw new BusinessException(getMessage("death.deceased.mismatch"));
+        }
+    }
+
+    private void validateDeceasedNotArchived(boolean archived, DeceasedStatus status) {
+        if (archived || status == DeceasedStatus.ARCHIVED) {
+            throw new BusinessException(getMessage("deceased.archived"));
         }
     }
 

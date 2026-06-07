@@ -58,7 +58,7 @@ public class DeceasedUnidentifiedController {
     }
 
     @PatchMapping("/{id}/archive")
-    public ResponseEntity<DeceasedUnidentifiedResponseDTO> archived(Long id) {
+    public ResponseEntity<DeceasedUnidentifiedResponseDTO> archived(@PathVariable("id") Long id) {
         deceasedUnidentifiedService.archived(id);
         return ResponseEntity.noContent().build();
     }

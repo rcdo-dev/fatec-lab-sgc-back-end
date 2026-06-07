@@ -9,6 +9,8 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.sgc.api.burial.repositories.BurialRepository;
+import br.com.sgc.api.common.enums.BurialStatus;
 import br.com.sgc.api.common.enums.DeceasedStatus;
 import br.com.sgc.api.common.exception.classes.BusinessException;
 import br.com.sgc.api.common.exception.classes.ConflictException;
@@ -35,6 +37,7 @@ public class DeceasedIdentifiedService {
 
     private final DeceasedIdentifiedRepository deceasedRepository;
     private final DeclarantRepository declarantRepository;
+    private final BurialRepository burialRepository;
     private final DeceasedIdentifiedMapper mapper;
     private final MessageSource messageSource;
 
@@ -50,7 +53,9 @@ public class DeceasedIdentifiedService {
 
         deceased.setDeclarant(declarant);
         deceased.setStatus(DeceasedStatus.ACTIVE);
-        
+        deceased.setArchived(false);
+        deceased.setArchivedAt(null);
+
         validateDuplicatedDocuments(request);
 
         return mapper.toResponse(deceasedRepository.save(deceased));
@@ -68,6 +73,7 @@ public class DeceasedIdentifiedService {
     public DeceasedIdentifiedResponseDTO update(Long id, DeceasedIdentifiedRequestDTO request) {
         var deceased = findDeceasedById(id);
 
+        validateNotArchived(deceased);
         validateUpdateDocuments(id, request);
 
         updateData(deceased, request);
@@ -77,6 +83,9 @@ public class DeceasedIdentifiedService {
 
     public void archive(Long id) {
         var deceased = findDeceasedById(id);
+
+        validateNotArchived(deceased);
+        validateWithoutActiveBurial(deceased.getId());
 
         deceased.setStatus(DeceasedStatus.ARCHIVED);
         deceased.setArchived(true);
@@ -106,6 +115,18 @@ public class DeceasedIdentifiedService {
         }
     }
 
+    private void validateNotArchived(DeceasedIdentifiedEntity deceased) {
+        if (deceased.isArchived() || deceased.getStatus() == DeceasedStatus.ARCHIVED) {
+            throw new BusinessException(getMessage("deceased.archived"));
+        }
+    }
+
+    private void validateWithoutActiveBurial(Long deceasedId) {
+        if (burialRepository.existsByDeceasedIdAndStatus(deceasedId, BurialStatus.IN_PROGRESS)) {
+            throw new BusinessException(getMessage("deceased.active.burial"));
+        }
+    }
+
     // ============================================================================================
     // UPDATE HELPERS
     // ============================================================================================
@@ -114,6 +135,7 @@ public class DeceasedIdentifiedService {
         deceased.setName(request.name());
         deceased.setBirthDate(request.birthDate());
         deceased.setGender(request.gender());
+        deceased.setGenderIdentity(request.genderIdentity());
         deceased.setDocument(buildDocumentInfo(request.document()));
         deceased.setOccupation(request.occupation());
         deceased.setFathersName(request.fathersName());
@@ -133,9 +155,10 @@ public class DeceasedIdentifiedService {
 
     private DeceasedIdentifiedEntity findDeceasedById(Long id) {
         if (id == null) {
-            throw new BusinessException("deceased.id.required");
+            throw new BusinessException(getMessage("deceased.id.required"));
         }
-        return deceasedRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("deceased.not.found"));
+        return deceasedRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(getMessage("deceased.not.found")));
     }
 
     // ============================================================================================

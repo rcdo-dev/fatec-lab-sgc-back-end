@@ -7,7 +7,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
+import br.com.sgc.api.burial.repositories.BurialRepository;
+import br.com.sgc.api.common.enums.BurialStatus;
 import br.com.sgc.api.common.enums.DeceasedStatus;
+import br.com.sgc.api.common.exception.classes.BusinessException;
 import br.com.sgc.api.common.exception.classes.ResourceNotFoundException;
 import br.com.sgc.api.person.dto.request.DeceasedPetRequestDTO;
 import br.com.sgc.api.person.dto.response.DeceasedPetResponseDTO;
@@ -28,6 +31,7 @@ public class DeceasedPetService {
 
     private final DeceasedPetRepository deceasedPetRepository;
     private final DeclarantRepository declarantRepository;
+    private final BurialRepository burialRepository;
     private final DeceasedPetMapper mapper;
     private final MessageSource messageSource;
 
@@ -39,9 +43,11 @@ public class DeceasedPetService {
         var deceased = mapper.toEntity(request);
 
         var declarant = declarantRepository.findById(request.declarantId())
-                .orElseThrow(() -> new ResourceNotFoundException(getMessage("deceased.not.found")));
+                .orElseThrow(() -> new ResourceNotFoundException(getMessage("declarant.not.found")));
         deceased.setDeclarant(declarant);
         deceased.setStatus(DeceasedStatus.ACTIVE);
+        deceased.setArchived(false);
+        deceased.setArchivedAt(null);
 
         return mapper.toResponse(deceasedPetRepository.save(deceased));
     }
@@ -57,7 +63,8 @@ public class DeceasedPetService {
     public DeceasedPetResponseDTO update(Long id, DeceasedPetRequestDTO request) {
         var deceased = findByDeceasedPetId(id);
 
-        updateData(deceased, null);
+        validateNotArchived(deceased);
+        updateData(deceased, request);
 
         return mapper.toResponse(deceasedPetRepository.save(deceased));
     }
@@ -65,11 +72,30 @@ public class DeceasedPetService {
     public void archived(Long id) {
         var deceased = findByDeceasedPetId(id);
 
+        validateNotArchived(deceased);
+        validateWithoutActiveBurial(deceased.getId());
+
         deceased.setArchived(true);
         deceased.setStatus(DeceasedStatus.ARCHIVED);
         deceased.setArchivedAt(LocalDateTime.now());
 
         deceasedPetRepository.save(deceased);
+    }
+
+    // ============================================================================================
+    // VALIDATIONS
+    // ============================================================================================
+
+    private void validateNotArchived(DeceasedPetEntity deceased) {
+        if (deceased.isArchived() || deceased.getStatus() == DeceasedStatus.ARCHIVED) {
+            throw new BusinessException(getMessage("deceased.archived"));
+        }
+    }
+
+    private void validateWithoutActiveBurial(Long deceasedId) {
+        if (burialRepository.existsByDeceasedIdAndStatus(deceasedId, BurialStatus.IN_PROGRESS)) {
+            throw new BusinessException(getMessage("deceased.active.burial"));
+        }
     }
 
     // ============================================================================================
@@ -90,6 +116,9 @@ public class DeceasedPetService {
     // ============================================================================================
 
     private DeceasedPetEntity findByDeceasedPetId(Long id) {
+        if (id == null) {
+            throw new BusinessException(getMessage("deceased.id.required"));
+        }
         return deceasedPetRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(getMessage("deceased.not.found")));
     }

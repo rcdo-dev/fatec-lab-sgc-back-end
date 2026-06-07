@@ -6,4 +6,5 @@ import br.com.sgc.api.person.entity.DeceasedPetEntity;
 
 public interface DeceasedPetRepository extends JpaRepository<DeceasedPetEntity, Long> {
 
+    boolean existsByDeclarantId(Long declarantId);
 }

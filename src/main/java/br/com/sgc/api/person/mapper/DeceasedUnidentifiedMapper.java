@@ -16,6 +16,6 @@ public interface DeceasedUnidentifiedMapper {
     DeceasedUnidentifiedEntity toEntity(DeceasedUnidentifiedRequestDTO dto);
 
     @Mapping(target = "declarantId", source = "declarant.id")
-    @Mapping(target = "deceasedStatus", ignore = true)
+    @Mapping(target = "deceasedStatus", source = "status")
     DeceasedUnidentifiedResponseDTO toResponse(DeceasedUnidentifiedEntity entity);
 }

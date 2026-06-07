@@ -16,6 +16,6 @@ public interface DeceasedIdentifiedMapper {
     DeceasedIdentifiedEntity toEntity(DeceasedIdentifiedRequestDTO dto);
 
     @Mapping(target = "declarantId", source = "declarant.id")
-    @Mapping(target = "deceasedStatus", ignore = true)
+    @Mapping(target = "deceasedStatus", source = "status")
     DeceasedIdentifiedResponseDTO toResponse(DeceasedIdentifiedEntity entity);
 }

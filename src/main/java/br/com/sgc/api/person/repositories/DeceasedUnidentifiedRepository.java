@@ -6,4 +6,5 @@ import br.com.sgc.api.person.entity.DeceasedUnidentifiedEntity;
 
 public interface DeceasedUnidentifiedRepository extends JpaRepository<DeceasedUnidentifiedEntity, Long> {
 
+    boolean existsByDeclarantId(Long declarantId);
 }
