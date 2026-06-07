@@ -1,6 +1,8 @@
 package br.com.sgc.api.person.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.sgc.api.burial.entity.BurialEntity;
 import br.com.sgc.api.common.enums.DeceasedStatus;
@@ -15,7 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import lombok.Getter;
@@ -42,6 +44,6 @@ public abstract class DeceasedEntity {
     @Column(name = "dec_archived_at")
     private LocalDateTime archivedAt;
 
-    @OneToOne(mappedBy = "deceased", fetch = FetchType.LAZY)
-    private BurialEntity burial;
+    @OneToMany(mappedBy = "deceased", fetch = FetchType.LAZY)
+    private List<BurialEntity> burials = new ArrayList<>();
 }
