@@ -13,6 +13,7 @@ public interface DeceasedIdentifiedMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "declarant", ignore = true)
     @Mapping(target = "status", ignore = true)
+    @Mapping(target = "burials", ignore = true)
     DeceasedIdentifiedEntity toEntity(DeceasedIdentifiedRequestDTO dto);
 
     @Mapping(target = "declarantId", source = "declarant.id")

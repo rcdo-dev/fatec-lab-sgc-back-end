@@ -45,7 +45,6 @@ import br.com.sgc.api.person.repositories.DeceasedIdentifiedRepository;
 import br.com.sgc.api.person.service.DeathService;
 import br.com.sgc.api.person.service.DeceasedIdentifiedService;
 import br.com.sgc.api.person.service.DeceasedPetService;
-import br.com.sgc.api.person.service.DeceasedUnidentifiedService;
 import br.com.sgc.api.person.service.DeclarantService;
 
 @SpringBootTest
@@ -57,9 +56,6 @@ class LifecycleServiceIntegrationTests {
 
     @Autowired
     private DeceasedIdentifiedService identifiedService;
-
-    @Autowired
-    private DeceasedUnidentifiedService unidentifiedService;
 
     @Autowired
     private DeceasedPetService petService;
