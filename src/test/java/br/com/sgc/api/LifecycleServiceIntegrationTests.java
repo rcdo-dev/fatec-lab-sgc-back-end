@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import org.junit.jupiter.api.Test;
@@ -272,9 +271,6 @@ class LifecycleServiceIntegrationTests {
                 "Santos",
                 true,
                 "Observacao",
-                DeceasedStatus.ARCHIVED,
-                true,
-                LocalDateTime.now(),
                 declarantId);
     }
 
@@ -286,9 +282,6 @@ class LifecycleServiceIntegrationTests {
                 GenderType.MALE,
                 "Caramelo",
                 8,
-                DeceasedStatus.ARCHIVED,
-                true,
-                LocalDateTime.now(),
                 declarantId);
     }
 
@@ -303,9 +296,6 @@ class LifecycleServiceIntegrationTests {
                 HairType.STRAIGHT,
                 "Castanho",
                 br.com.sgc.api.common.enums.EyeType.ROUND,
-                DeceasedStatus.ARCHIVED,
-                true,
-                LocalDateTime.now(),
                 declarantId);
     }
 

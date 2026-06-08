@@ -1,9 +1,7 @@
 package br.com.sgc.api.person.dto.request;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-import br.com.sgc.api.common.enums.DeceasedStatus;
 import br.com.sgc.api.common.enums.GenderIdentityType;
 import br.com.sgc.api.common.enums.GenderType;
 import br.com.sgc.api.person.dto.request.support.DocumentInfoRequestDTO;
@@ -62,18 +60,6 @@ public record DeceasedIdentifiedRequestDTO(
 
     @Schema(description = "Campo para anotar observações.", example = "Faleceu cedo demais.")
     String observations,
-
-    @Schema(description = "Gênero (ACTIVE / BURIED / EXHUMED / TRANSFERRED / ARCHIVED).", example = "ACTIVE")
-    @NotNull(message = "{validation.assigned.value.cannot.be.null}")
-    DeceasedStatus deceasedStatus,
-
-    @Schema(description = "Este dado foi arquivado?", example = "false")
-    @NotNull(message = "{validation.assigned.value.cannot.be.null}")
-    boolean archived,
-
-    @Schema(description = "Data do arquivamento.", example = "2026-04-23")
-    @NotNull(message = "{validation.assigned.value.cannot.be.null}")
-    LocalDateTime archivedAt,
 
     @Schema(description = "ID do declarante.", example = "1")
     @NotNull(message = "{validation.assigned.value.cannot.be.null}")

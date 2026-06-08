@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.sgc.api.common.enums.DeceasedStatus;
 import br.com.sgc.api.common.enums.EyeType;
 import br.com.sgc.api.common.enums.GenderIdentityType;
 import br.com.sgc.api.common.enums.GenderType;
@@ -143,9 +141,6 @@ class LifecycleControllerIntegrationTests {
                 "Santos",
                 true,
                 "Observacao",
-                DeceasedStatus.ACTIVE,
-                false,
-                LocalDateTime.now(),
                 declarantId);
     }
 
@@ -159,9 +154,6 @@ class LifecycleControllerIntegrationTests {
                 HairType.STRAIGHT,
                 "Castanho",
                 EyeType.ROUND,
-                DeceasedStatus.ACTIVE,
-                false,
-                LocalDateTime.now(),
                 declarantId);
     }
 

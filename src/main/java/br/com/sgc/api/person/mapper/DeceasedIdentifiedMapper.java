@@ -13,6 +13,8 @@ public interface DeceasedIdentifiedMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "declarant", ignore = true)
     @Mapping(target = "status", ignore = true)
+    @Mapping(target = "archived", ignore = true)
+    @Mapping(target = "archivedAt", ignore = true)
     @Mapping(target = "burials", ignore = true)
     DeceasedIdentifiedEntity toEntity(DeceasedIdentifiedRequestDTO dto);
 

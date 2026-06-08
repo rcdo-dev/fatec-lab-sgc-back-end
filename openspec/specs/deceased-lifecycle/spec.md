@@ -4,16 +4,16 @@
 TBD - created by archiving change life-cycle-correction. Update Purpose after archive.
 ## Requirements
 ### Requirement: Estado de ciclo de vida do falecido é controlado pelo sistema
-O sistema SHALL criar todo registro de falecido com status `ACTIVE`, `archived=false` e `archivedAt=null`, independentemente dos valores de ciclo de vida enviados pelo cliente.
+O sistema SHALL criar todo registro de falecido com status `ACTIVE`, `archived=false` e `archivedAt=null`, sem aceitar campos de controle de ciclo de vida nos DTOs de request de falecido.
 
 #### Scenario: Falecido identificado é criado com estado padrão de ciclo de vida
-- **WHEN** um falecido identificado é criado com quaisquer campos de ciclo de vida enviados pelo cliente
+- **WHEN** um falecido identificado é criado por meio de um DTO de request sem campos de ciclo de vida
 - **THEN** o status persistido do falecido é `ACTIVE`
 - **AND** `archived` é `false`
 - **AND** `archivedAt` é `null`
 
 #### Scenario: Falecido pet é criado com estado padrão de ciclo de vida
-- **WHEN** um falecido pet é criado com quaisquer campos de ciclo de vida enviados pelo cliente
+- **WHEN** um falecido pet é criado por meio de um DTO de request sem campos de ciclo de vida
 - **THEN** o status persistido do falecido é `ACTIVE`
 - **AND** `archived` é `false`
 - **AND** `archivedAt` é `null`
@@ -57,4 +57,3 @@ O sistema MUST rejeitar a exclusão de um Declarant enquanto qualquer registro d
 - **WHEN** uma solicitação de delete tem como alvo um Declarant que possui registros de falecido relacionados
 - **THEN** o sistema rejeita a solicitação como violação de regra de negócio
 - **AND** o Declarant e os registros de falecido relacionados permanecem persistidos
-
