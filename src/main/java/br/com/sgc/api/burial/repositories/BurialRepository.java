@@ -3,12 +3,10 @@ package br.com.sgc.api.burial.repositories;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import br.com.sgc.api.burial.entity.BurialEntity;
 import br.com.sgc.api.common.enums.BurialStatus;
 
-@Repository
 public interface BurialRepository extends JpaRepository<BurialEntity, Long> {
 
     boolean existsByDeceasedIdAndStatus(Long deceasedId, BurialStatus status);
