@@ -16,8 +16,12 @@ public interface CemeteryMapper {
 
     @Mapping(target = "id", ignore = true) // Ignora o mapeamento para id.
     @Mapping(target = "blocks", ignore = true) // Ignora o mapeamento para blocks.
+    @Mapping(target = "wakeConfiguration", ignore = true)
     CemeteryEntity toEntity(CemeteryRequestDTO dto);
 
+    @Mapping(target = "wakeDurationMinutes", source = "wakeConfiguration.durationMinutes")
+    @Mapping(target = "wakeCharged", source = "wakeConfiguration.charged")
+    @Mapping(target = "wakeFee", source = "wakeConfiguration.fee")
     CemeteryResponseDTO toResponse(CemeteryEntity entity);
 
 }

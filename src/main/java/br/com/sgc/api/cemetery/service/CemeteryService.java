@@ -22,9 +22,19 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CemeteryService {
+
+    // ============================================================================================
+    // DEPENDENCIES
+    // ============================================================================================
+
     private final CemeteryRepository cemeteryRepository;
     private final CemeteryMapper mapper;
     private final MessageSource messageSource;
+    private final WakeConfigurationService wakeConfigurationService;
+
+    // ============================================================================================
+    // PUBLIC METHODS
+    // ============================================================================================
 
     public CemeteryResponseDTO save(CemeteryRequestDTO request) {
 
@@ -37,6 +47,11 @@ public class CemeteryService {
          */
         var cemetery = Objects.requireNonNull(mapper.toEntity(request),
                 getMessage("validation.assigned.value.cannot.be.null"));
+        cemetery.setWakeConfiguration(wakeConfigurationService.createForCemetery(
+                cemetery,
+                request.wakeDurationMinutes(),
+                request.wakeCharged(),
+                request.wakeFee()));
 
         var cemeterySaved = cemeteryRepository.save(cemetery);
 
@@ -61,6 +76,11 @@ public class CemeteryService {
         cemetery.setName(request.name());
         cemetery.setFoundation(request.foundation());
         cemetery.setActive(request.active());
+        wakeConfigurationService.updateForCemetery(
+                cemetery,
+                request.wakeDurationMinutes(),
+                request.wakeCharged(),
+                request.wakeFee());
 
         cemeteryRepository.save(cemetery);
 
@@ -74,6 +94,10 @@ public class CemeteryService {
         return mapper.toResponse(cemeteryRepository.save(cemetery));
     }
 
+    // ============================================================================================
+    // FIND METHODS
+    // ============================================================================================
+
     private CemeteryEntity findCemeteryById(Long id) {
         if (id == null) {
             throw new BusinessException(getMessage("cemetery.id.required"));
@@ -85,8 +109,13 @@ public class CemeteryService {
 
     }
 
+    // ============================================================================================
+    // MESSAGE METHODS
+    // ============================================================================================
+
     private String getMessage(String key) {
         return messageSource.getMessage(Objects.requireNonNull(key), null, "Messagem nao encontrada: " + key,
                 LocaleContextHolder.getLocale());
     }
+
 }

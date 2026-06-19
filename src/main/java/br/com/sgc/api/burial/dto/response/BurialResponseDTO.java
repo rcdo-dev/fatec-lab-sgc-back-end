@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import br.com.sgc.api.common.enums.BurialStatus;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(title = "Burial Response", description = "DTO de resposta para o sepultamento.")

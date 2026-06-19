@@ -8,4 +8,8 @@ public interface CemeteryRepository extends JpaRepository<CemeteryEntity, Long> 
     boolean existsByNameIgnoreCase(String name);
 
     boolean existsByNameIgnoreCaseAndIdNot(String name, Long id);
+
+    long countByActiveTrue();
+
+    java.util.Optional<CemeteryEntity> findFirstByActiveTrue();
 }

@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -50,4 +51,7 @@ public class CemeteryEntity {
 
     @OneToMany(mappedBy = "cemetery", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BlockEntity> blocks = new ArrayList<>();
+
+    @OneToOne(mappedBy = "cemetery", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private WakeConfigurationEntity wakeConfiguration;
 }
