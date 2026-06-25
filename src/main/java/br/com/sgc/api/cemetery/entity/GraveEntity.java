@@ -19,6 +19,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
@@ -58,7 +59,7 @@ public class GraveEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gra_area_type", nullable = false)
-    private AreaType areaType;
+    private AreaType areaType; // Perhaps "area" is an attribute of a cemetery.
 
     @Column(name = "gra_active")
     private boolean active;
@@ -79,4 +80,7 @@ public class GraveEntity {
 
     @OneToMany(mappedBy = "grave", fetch = FetchType.LAZY)
     private List<BurialEntity> burials = new ArrayList<>();
+
+    @OneToOne(mappedBy = "grave", fetch = FetchType.LAZY)
+    private ContractEntity contract;
 }

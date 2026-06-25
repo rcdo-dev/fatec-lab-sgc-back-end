@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -49,4 +50,8 @@ public class ContractEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_con_conh_id", nullable = false)
 	private ContractHolderEntity holder;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fk_con_gra_id", nullable = false)
+	private GraveEntity grave;
 }
