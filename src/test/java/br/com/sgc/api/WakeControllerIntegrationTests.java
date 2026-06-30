@@ -10,7 +10,7 @@ import java.time.LocalTime;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,7 +33,7 @@ import br.com.sgc.api.person.service.DeceasedIdentifiedService;
 import br.com.sgc.api.person.service.DeclarantService;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfiguration
 @Transactional
 class WakeControllerIntegrationTests {
 
