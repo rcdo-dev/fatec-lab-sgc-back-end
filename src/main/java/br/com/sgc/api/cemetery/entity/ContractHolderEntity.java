@@ -47,5 +47,5 @@ public class ContractHolderEntity {
     private boolean active;
 
     @OneToMany(mappedBy = "holder", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ContractEntity> contratcts = new ArrayList<>();
+    private List<ContractEntity> contracts = new ArrayList<>();
 }

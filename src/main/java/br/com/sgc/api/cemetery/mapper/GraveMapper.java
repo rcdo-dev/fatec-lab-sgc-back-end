@@ -17,7 +17,7 @@ public interface GraveMapper {
     @Mapping(target = "blocked", ignore = true)
     @Mapping(target = "reason", ignore = true)
     @Mapping(target = "burials", ignore = true)
-    @Mapping(target = "contract", ignore = true)
+    @Mapping(target = "contracts", ignore = true)
     GraveEntity toEntity(GraveRequestDTO dto);
 
     @Mapping(target = "blockId", source = "block.id")

@@ -19,7 +19,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
@@ -81,6 +80,6 @@ public class GraveEntity {
     @OneToMany(mappedBy = "grave", fetch = FetchType.LAZY)
     private List<BurialEntity> burials = new ArrayList<>();
 
-    @OneToOne(mappedBy = "grave", fetch = FetchType.LAZY)
-    private ContractEntity contract;
+    @OneToMany(mappedBy = "grave", fetch = FetchType.LAZY)
+    private List<ContractEntity> contracts = new ArrayList<>();
 }

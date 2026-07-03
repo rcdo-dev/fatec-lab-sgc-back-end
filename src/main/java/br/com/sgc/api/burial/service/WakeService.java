@@ -151,6 +151,7 @@ public class WakeService {
         return deceasedRepository.findById(deceasedId)
         .orElseThrow(() -> new ResourceNotFoundException(getMessage("wake.deceased.not.found")));
     }
+    
     // ============================================================================================
     // MESSAGE METHODS
     // ============================================================================================

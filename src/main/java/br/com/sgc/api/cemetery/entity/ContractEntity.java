@@ -6,13 +6,14 @@ import java.time.LocalDate;
 import br.com.sgc.api.common.enums.ContractStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,6 +39,7 @@ public class ContractEntity {
 	@Column(name = "con_fee", nullable = false)
 	private BigDecimal fee;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "con_status", nullable = false)
 	private ContractStatus status;
 
@@ -51,7 +53,7 @@ public class ContractEntity {
 	@JoinColumn(name = "fk_con_conh_id", nullable = false)
 	private ContractHolderEntity holder;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_con_gra_id", nullable = false)
 	private GraveEntity grave;
 }

@@ -9,15 +9,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import br.com.sgc.api.common.enums.EyeType;
 import br.com.sgc.api.common.enums.GenderIdentityType;
@@ -42,10 +45,11 @@ import br.com.sgc.api.person.service.DeclarantService;
 class LifecycleControllerIntegrationTests {
 
     @Autowired
+    private WebApplicationContext webApplicationContext;
+
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final JsonMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
 
     @Autowired
     private DeclarantService declarantService;
@@ -60,6 +64,11 @@ class LifecycleControllerIntegrationTests {
     private DeathService deathService;
 
     private long sequence;
+
+    @BeforeEach
+    void setUpMockMvc() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    }
 
     @Test
     void deathPutAndDeleteRoutesBindPathVariable() throws Exception {
