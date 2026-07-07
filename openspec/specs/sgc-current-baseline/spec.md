@@ -18,7 +18,7 @@ A baseline SHALL (deve) documentar os pacotes `cemetery`, `person`, `burial`, `c
 
 #### Scenario: Pacotes são descritos por responsabilidade
 - **QUANDO** a baseline listar a estrutura de pacotes
-- **ENTÃO** `cemetery` cobre Cemetery, Block, Grave e WakeConfiguration
+- **ENTÃO** `cemetery` cobre Cemetery, Block, Grave, WakeConfiguration, Contract e ContractHolder
 - **E** `person` cobre Declarant, Deceased, DeceasedIdentified, DeceasedUnidentified, DeceasedPet e Death
 - **E** `burial` cobre Burial e Wake
 - **E** `common` cobre configurações, enums, exceções e utilitários compartilhados
@@ -32,6 +32,8 @@ A baseline SHALL (deve) documentar as Entities implementadas, seus relacionament
 - **ENTÃO** ela registra `CemeteryEntity` com `BlockEntity` e `WakeConfigurationEntity`
 - **E** registra `BlockEntity` com `GraveEntity`
 - **E** registra `GraveEntity` com `BurialEntity`
+- **E** registra `ContractEntity` vinculado a `ContractHolderEntity` e `GraveEntity`
+- **E** registra `ContractHolderEntity` com lista de `ContractEntity`
 - **E** registra `DeclarantEntity` com `DeceasedIdentifiedEntity`, `DeceasedUnidentifiedEntity` e `DeceasedPetEntity`
 - **E** registra `DeceasedEntity` como classe abstrata persistida com herança `JOINED`
 - **E** registra `DeathEntity` vinculado a `DeceasedEntity`
@@ -51,6 +53,7 @@ A baseline SHALL (deve) documentar a superfície HTTP atualmente exposta pelos C
 - **ENTÃO** ela lista `/cemeteries` com POST, GET, GET por id, PUT por id e PATCH `/{id}/inactive`
 - **E** lista `/blocks` com POST, GET, GET por id, PUT por id e PATCH `/{id}/inactive`
 - **E** lista `/graves` com POST, GET, GET por id, PUT por id e PATCH `/{id}/inactive`
+- **E** lista `/contracts` com POST, GET, GET por id, PUT por id, PATCH `/{id}/suspend`, PATCH `/{id}/reactivate`, PATCH `/{id}/expire` e PATCH `/{id}/inactive`
 - **E** lista `/declarant` com POST, GET, GET por id, PUT por id e DELETE por id
 - **E** lista `/deceased-identified`, `/deceased-unidentified` e `/pet` com POST, GET, GET por id, PUT por id e PATCH `/{id}/archive`
 - **E** lista `/death` com POST, GET, GET por id, PUT por id e DELETE por id
@@ -69,6 +72,18 @@ A baseline SHALL (deve) documentar as regras de negócio efetivamente codificada
 - **E** registra que Grave de área `COMMON` deve ser `EARTH`
 - **E** registra que Grave de área `PERPETUAL` deve ser `EARTH` ou `MAUSOLEUM`
 - **E** registra capacidade máxima de 2 corpos para `EARTH` e 4 para `MAUSOLEUM`
+
+#### Scenario: Regras de Contract são registradas
+- **QUANDO** a baseline documentar regras de contratos
+- **ENTÃO** ela registra unicidade de número de Contract
+- **E** registra que Contract exige data final posterior à data inicial
+- **E** registra que criação de Contract aceita exatamente uma seleção de sepultura: `graveId` existente ou `newGrave`
+- **E** registra que `newGrave` cria sepultura ativa, desbloqueada, `MAUSOLEUM`, `PERPETUAL` e `AVAILABLE`
+- **E** registra que sepultura vinculada a Contract deve estar ativa, desbloqueada, `MAUSOLEUM` e `PERPETUAL`
+- **E** registra bloqueio de novo Contract para sepultura com contrato aberto em `ACTIVE`, `SUSPENDED` ou `OVERDUE`
+- **E** registra reuso ou criação de `ContractHolderEntity` por CPF
+- **E** registra transições controladas entre `ACTIVE`, `SUSPENDED`, `OVERDUE`, `EXPIRED` e `INACTIVE`
+- **E** registra rotina agendada diária que muda contratos `ACTIVE` vencidos para `OVERDUE`
 
 #### Scenario: Regras de falecido e declarante são registradas
 - **QUANDO** a baseline documentar regras do pacote `person`
@@ -95,6 +110,9 @@ A baseline SHALL (deve) documentar os Repositories existentes e as consultas der
 #### Scenario: Consultas relevantes são registradas
 - **QUANDO** a baseline documentar persistência
 - **ENTÃO** ela registra verificações de unicidade por Cemetery, Block, Grave, Declarant e DeceasedIdentified
+- **E** registra verificações de unicidade e vínculo aberto em Contract por número e por Grave
+- **E** registra consulta de Contract por status e data final para atualização de contratos vencidos
+- **E** registra consulta de ContractHolder por CPF
 - **E** registra consultas de Burial por Deceased, Grave, status e contagem de Burials ativos por Grave
 - **E** registra `DeathRepository.existsByDeceasedId`
 - **E** registra `WakeRepository.existsScheduleConflict`
@@ -106,10 +124,11 @@ A baseline SHALL (deve) documentar os DTOs de request/response, os Mappers MapSt
 
 #### Scenario: Contratos auxiliares são registrados
 - **QUANDO** a baseline documentar contratos de entrada e saída
-- **ENTÃO** ela registra DTOs de request e response para Cemetery, Block, Grave, Declarant, DeceasedIdentified, DeceasedUnidentified, DeceasedPet, Death, Burial e Wake
+- **ENTÃO** ela registra DTOs de request e response para Cemetery, Block, Grave, Contract, ContractHolder, Declarant, DeceasedIdentified, DeceasedUnidentified, DeceasedPet, Death, Burial e Wake
+- **E** registra DTOs de suporte de Contract para seleção de sepultura nova ou existente
 - **E** registra DTOs de suporte para documento, contato e endereço
-- **E** registra Mappers MapStruct com `componentModel = "spring"` para Cemetery, Block, Grave, Declarant, DeceasedIdentified, DeceasedUnidentified, DeceasedPet, Death, Burial e Wake
-- **E** registra os enums `AreaType`, `BurialStatus`, `DeceasedStatus`, `EyeType`, `GenderIdentityType`, `GenderType`, `GraveStatus`, `GraveType`, `HairType`, `SkinColor` e `WakeStatus`
+- **E** registra Mappers MapStruct com `componentModel = "spring"` para Cemetery, Block, Grave, Contract, Declarant, DeceasedIdentified, DeceasedUnidentified, DeceasedPet, Death, Burial e Wake
+- **E** registra os enums `AreaType`, `BurialStatus`, `ContractStatus`, `DeceasedStatus`, `EyeType`, `GenderIdentityType`, `GenderType`, `GraveStatus`, `GraveType`, `HairType`, `SkinColor` e `WakeStatus`
 
 ### Requirement: Baseline documenta exceções, mensagens e tratamento de erro
 A baseline SHALL (deve) documentar o tratamento centralizado de erros e as mensagens configuradas no estado atual.
@@ -128,8 +147,7 @@ A baseline MUST (deve obrigatoriamente) separar lacunas do domínio esperado das
 
 #### Scenario: Gaps principais são registrados
 - **QUANDO** a baseline documentar gaps
-- **ENTÃO** ela registra que `Contract` não foi encontrado no código atual
-- **E** registra que regras de exumação não estão implementadas
+- **ENTÃO** ela registra que regras de exumação não estão implementadas
 - **E** registra que `ExhumationEntity` e `FileEntity` são classes esqueleto sem Entity, Service, Repository ou Controller funcional
 - **E** registra que exclusão física ainda existe para `Death` e `Declarant` em cenários permitidos
 - **E** registra que `BurialEntity` usa associação `@OneToOne` com Deceased, embora Services usem histórico por status
@@ -142,5 +160,5 @@ A baseline SHALL (deve) recomendar próximas specs para evolução controlada do
 
 #### Scenario: Recomendações são priorizadas
 - **QUANDO** a baseline apresentar recomendações
-- **ENTÃO** ela recomenda specs futuras para Contract, Exhumation, histórico/auditoria de registros administrativos, padronização de exclusão lógica, endpoints de transição de Grave, hardening de inativação e padronização de mensagens
+- **ENTÃO** ela recomenda specs futuras para Exhumation, histórico/auditoria de registros administrativos, padronização de exclusão lógica, endpoints de transição de Grave, hardening de inativação e padronização de mensagens
 - **E** ela recomenda reconciliar `BurialEntity` com o modelo de histórico antes de ampliar regras de sepultamento
