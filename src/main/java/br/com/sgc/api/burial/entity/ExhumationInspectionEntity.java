@@ -1,9 +1,8 @@
 package br.com.sgc.api.burial.entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import br.com.sgc.api.common.enums.DecompositionStatus;
+
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,7 +35,7 @@ public class ExhumationInspectionEntity {
     private Long id;
 
     @Column(name = "exhi_inspected_at", nullable = false)
-    private LocalDateTime inspectedAt;
+    private LocalDate inspectedAt;
 
     @Column(name = "exhi_decomposition_status", nullable = false)
     @Enumerated(EnumType.STRING)

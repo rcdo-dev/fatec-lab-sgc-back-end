@@ -48,7 +48,7 @@ public class BurialEntity {
     @Enumerated(EnumType.STRING)
     private BurialStatus status;
 
-    @Column(name = "bur_observations", nullable = false)
+    @Column(name = "bur_observations")
     private String observations;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -58,5 +58,8 @@ public class BurialEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_bur_gra_id", nullable = false)
     private GraveEntity grave;
+
+    @OneToOne(mappedBy = "burial", fetch = FetchType.LAZY)
+    private ExhumationInspectionEntity inspection;
 
 }
