@@ -14,6 +14,7 @@ public interface BurialMapper {
     @Mapping(target = "deceased", ignore = true)
     @Mapping(target = "grave", ignore = true)
     @Mapping(target = "status", ignore = true)
+    @Mapping(target = "inspection", ignore = true)
     BurialEntity toEntity(BurialRequestDTO dto);
 
     @Mapping(target = "deceasedId", source = "deceased.id")
