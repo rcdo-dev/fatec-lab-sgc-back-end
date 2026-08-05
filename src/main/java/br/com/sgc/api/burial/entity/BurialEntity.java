@@ -2,6 +2,8 @@ package br.com.sgc.api.burial.entity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.sgc.api.cemetery.entity.GraveEntity;
 import br.com.sgc.api.common.enums.BurialStatus;
@@ -17,6 +19,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -59,7 +62,7 @@ public class BurialEntity {
     @JoinColumn(name = "fk_bur_gra_id", nullable = false)
     private GraveEntity grave;
 
-    @OneToOne(mappedBy = "burial", fetch = FetchType.LAZY)
-    private ExhumationInspectionEntity inspection;
+    @OneToMany(mappedBy = "burial", fetch = FetchType.LAZY)
+    private List<ExhumationInspectionEntity> inspections = new ArrayList<>();
 
 }

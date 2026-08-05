@@ -51,6 +51,6 @@ public class ExhumationEntity {
     private String observations;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "fk_exh_bur_id", nullable = false, unique = true)
-    private BurialEntity burial;
+    @JoinColumn(name = "fk_exh_exhi_id", nullable = false, unique = true)
+    private ExhumationInspectionEntity inspection;
 }

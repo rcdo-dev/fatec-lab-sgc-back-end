@@ -14,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -50,5 +51,8 @@ public class ExhumationInspectionEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "fk_exhi_bur_id", nullable = false)
     private BurialEntity burial;
+
+    @OneToOne(mappedBy = "inspection", fetch = FetchType.LAZY)
+    private ExhumationEntity exhumation;
 
 }
