@@ -1,7 +1,6 @@
 package br.com.sgc.api.burial.entity;
 
-import java.time.LocalDateTime;
-
+import java.time.LocalDate;
 import br.com.sgc.api.common.enums.ExhumationDispositionType;
 import br.com.sgc.api.common.enums.ExhumationPurpose;
 
@@ -40,7 +39,7 @@ public class ExhumationEntity {
     private ExhumationPurpose purpose;
 
     @Column(name = "exh_date_time", nullable = false)
-    private LocalDateTime exhumedAt;
+    private LocalDate exhumedAt;
 
     // Incluir e relacionar possíveis locais de destino.
     @Column(name = "exh_disposition_type", nullable = false)
